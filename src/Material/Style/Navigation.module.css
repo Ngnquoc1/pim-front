@@ -4,16 +4,16 @@
     border-right: 1px solid gainsboro;
 }
 
-.text-semi-bold {
+.textSemiBold {
     font-size: 14pt;
     font-weight: 600;
     color: #2f85fa;
 }
 
-.first-element {
+.firstElement {
     margin-top: 15px;
 }
 
-.navbar {
+.navbarCustom {
     padding: 0 !important;
 }

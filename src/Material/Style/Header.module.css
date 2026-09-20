@@ -17,7 +17,6 @@
     align-content: center;
 }
 
-.col {
+.colNoPadding {
     padding: 0 !important;
 }
-

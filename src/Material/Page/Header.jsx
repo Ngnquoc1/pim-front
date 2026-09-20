@@ -1,7 +1,7 @@
 import React from "react";
 import Translate from "react-translate-component";
 import { Container, Row, Col } from "react-bootstrap";
-import "../Style/Header.css";
+import styles from "../Style/Header.module.css";
 import logo from "../Images/logo_elca.png";
 import counterpart from "counterpart";
 import en from "../lang/en";
@@ -10,15 +10,15 @@ counterpart.registerTranslations("en", en);
 
 function Header() {
   return (
-    <div className="content">
+    <div className={styles.content}>
       <Container fluid>
         <Row>
           <Col xl={1} />
           <Col xl={1}>
-            <img className="logo" src={logo} alt="logo" />
+            <img className={styles.logo} src={logo} alt="logo" />
           </Col>
           <Col xl={6}>
-            <p className="name">
+            <p className={styles.name}>
               <Translate content="header.name" />
             </p>
           </Col>

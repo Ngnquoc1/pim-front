@@ -1,7 +1,7 @@
 import React from "react";
 import Translate from "react-translate-component";
 import { Row, Col, Nav, Navbar } from "react-bootstrap";
-import "../Style/Navigation.css";
+import styles from "../Style/Navigation.module.css";
 import counterpart from "counterpart";
 import en from "../lang/en";
 import { Link } from "react-router-dom";
@@ -10,20 +10,20 @@ counterpart.registerTranslations("en", en);
 
 function Sidebar() {
   return (
-    <Navbar collapseOnSelect expand="lg">
+    <Navbar collapseOnSelect expand="lg" className={styles.navbarCustom}>
       <Navbar.Brand />
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
-        <Nav className="navigation">
+        <Nav className={styles.navigation}>
           <Row>
             <Col xl={12}>
               <Nav.Link as={Link} to="/">
-                <p className="text-semi-bold first-element">
+                <p className={`${styles.textSemiBold} ${styles.firstElement}`}>
                   <Translate content="navigation.title" />
                 </p>
               </Nav.Link>
               <Nav.Link>
-                <p className="text-semi-bold">
+                <p className={styles.textSemiBold}>
                   <Translate content="navigation.new" />
                 </p>
               </Nav.Link>

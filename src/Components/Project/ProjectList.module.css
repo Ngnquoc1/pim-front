@@ -1,0 +1,26 @@
+/* Styling for Project Grid Table */
+.projectGridTable {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #666666;
+    border: 1px solid #d8d8d8;
+}
+
+.projectGridTable thead th {
+    height: 32px;
+    padding: 4px 8px !important;
+    font-weight: 600;
+    color: #666666;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #d8d8d8 !important;
+    font-size: 14px;
+}
+
+.projectGridTable tbody td {
+    padding: 6px 8px !important;
+    font-size: 14px;
+    color: #666666;
+}
+
+.projectGridTable tbody tr:hover {
+    background-color: #f0f7ff;
+}

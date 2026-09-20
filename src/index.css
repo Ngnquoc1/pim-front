@@ -1,4 +1,103 @@
+/* Global Base Styles */
 body {
-  background-color: gainsboro;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #ffffff;
+    color: #333333;
 }
 
+/* ==========================================================================
+   PIM Tool Global Button Design System
+   ========================================================================== */
+
+/* Primary Button (Search Project, Create Project, Save) */
+.btn-pim-primary {
+    height: 35px;
+    padding: 6px 36px !important;
+    background: linear-gradient(180deg, #0086ca 0%, #0066cc 100%) !important;
+    border: 1px solid #005bb5 !important;
+    color: #ffffff !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) !important;
+    outline: none !important;
+    transition: background 0.15s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.btn-pim-primary:hover {
+    background: linear-gradient(180deg, #0077b5 0%, #0055b3 100%) !important;
+    border-color: #004d99 !important;
+    color: #ffffff !important;
+}
+
+.btn-pim-primary:disabled {
+    background: #9ac2fc !important;
+    border-color: #9ac2fc !important;
+    color: #ffffff !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+}
+
+/* Secondary Button (Cancel) */
+.btn-pim-secondary {
+    height: 35px;
+    padding: 6px 24px !important;
+    background: linear-gradient(180deg, #ffffff 0%, #f4f4f4 50%, #ebebeb 100%) !important;
+    border: 1px solid #b9b9b9 !important;
+    color: #333333 !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08) !important;
+    outline: none !important;
+    transition: background 0.15s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.btn-pim-secondary:hover {
+    background: linear-gradient(180deg, #f4f4f4 0%, #eaeaea 100%) !important;
+    color: #333333 !important;
+}
+
+/* Link Button (Reset Search) */
+.btn-pim-link {
+    background: transparent !important;
+    border: none !important;
+    color: #2f85fa !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.btn-pim-link:hover {
+    color: #1a6edb !important;
+    text-decoration: underline !important;
+}
+
+/* Focus and active outline cleanup */
+.btn-pim-primary:focus,
+.btn-pim-primary:active,
+.btn-pim-secondary:focus,
+.btn-pim-secondary:active,
+.btn-pim-link:focus,
+.btn-pim-link:active {
+    outline: none !important;
+    box-shadow: none !important;
+}

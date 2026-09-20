@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Row, Col, Button } from "react-bootstrap";
+import { Form, Row, Col } from "react-bootstrap";
 import Translate from "react-translate-component";
 import counterpart from "counterpart";
 import { useSearchCriteria, useProjectActions } from "../../store/useProjectStore";
@@ -14,17 +14,17 @@ function ProjectSearchBar() {
     useEffect(() => {
         setKeyword(searchCriteria.keyword || "");
         setStatusFilter(searchCriteria.status || "ALL");
-      }, [searchCriteria.keyword, searchCriteria.status]);
+    }, [searchCriteria.keyword, searchCriteria.status]);
 
-      const handleSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         const newCriteria = {
-          keyword: keyword.trim(),
-          status: statusFilter,
+            keyword: keyword.trim(),
+            status: statusFilter,
         };
         setSearchCriteria(newCriteria);
         fetchProjects(newCriteria).catch(() => {});
-      };
+    };
 
     const handleReset = (e) => {
         e.preventDefault();
@@ -73,14 +73,13 @@ function ProjectSearchBar() {
                 </Col>
 
                 <Col md={4} lg={5} sm={12} className="d-flex align-items-center">
-                    <Button type="submit" variant="primary" className="search-btn mr-4">
+                    <button type="submit" className="btn btn-pim-primary mr-4">
                         <Translate content="projectList.searchButton" />
-                    </Button>
+                    </button>
                     <button
                         type="button"
                         onClick={handleReset}
-                        className="btn btn-link reset-search-link p-0 text-decoration-none"
-                        style={{ color: "#2f85fa", cursor: "pointer", fontSize: "14px" }}
+                        className="btn btn-pim-link"
                     >
                         <Translate content="projectList.resetSearch" />
                     </button>

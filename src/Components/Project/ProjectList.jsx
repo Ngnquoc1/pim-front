@@ -7,7 +7,7 @@ import TrashIcon from "../Common/TrashIcon";
 import ProjectListItem from "./ProjectListItem";
 import { useProjects, useProjectLoading, useProjectActions } from "../../store/useProjectStore";
 
-import "./ProjectList.css";
+import styles from "./ProjectList.module.css";
 
 export const ProjectList = () => {
   const projects = useProjects();
@@ -76,13 +76,13 @@ export const ProjectList = () => {
         </div>
       )}
 
-      {/* Project grid table*/}
+      {/* Project grid table */}
       {!loading && (
         <>
-          <Table hover responsive bordered className="project-grid-table mb-2">
+          <Table hover responsive bordered className={`project-grid-table mb-2 ${styles.projectGridTable}`}>
             <thead>
               <tr>
-                {/* Header checkbox*/}
+                {/* Header checkbox */}
                 <th className="text-center align-middle" style={{ width: "40px" }}>
                   <input
                     type="checkbox"
@@ -92,32 +92,32 @@ export const ProjectList = () => {
                   />
                 </th>
 
-                {/* Number column*/}
+                {/* Number column */}
                 <th className="text-right align-middle" style={{ width: "100px" }}>
                   <Translate content="projectList.colNumber" />
                 </th>
 
-                {/* Name column*/}
+                {/* Name column */}
                 <th className="text-left align-middle">
                   <Translate content="projectList.colName" />
                 </th>
 
-                {/* Status column*/}
+                {/* Status column */}
                 <th className="text-left align-middle" style={{ width: "140px" }}>
                   <Translate content="projectList.colStatus" />
                 </th>
 
-                {/* Customer column*/}
+                {/* Customer column */}
                 <th className="text-left align-middle" style={{ width: "220px" }}>
                   <Translate content="projectList.colCustomer" />
                 </th>
 
-                {/* Start date column*/}
+                {/* Start date column */}
                 <th className="text-center align-middle" style={{ width: "130px" }}>
                   <Translate content="projectList.colStartDate" />
                 </th>
 
-                {/* Delete column*/}
+                {/* Delete column */}
                 <th className="text-center align-middle" style={{ width: "70px" }}>
                   <Translate content="projectList.colDelete" />
                 </th>
@@ -144,7 +144,7 @@ export const ProjectList = () => {
             </tbody>
           </Table>
 
-          {/* Bulk delete banner  */}
+          {/* Bulk delete banner */}
           {selectedIds.length > 0 && (
             <div className="bulk-delete-banner d-flex align-items-center mt-3 py-2 bg-light border">
               {/* Left section: Selected items count */}
