@@ -5,8 +5,7 @@ import Header from "./Header";
 import Sidebar from "./Sidebar";
 import ErrorScreen from "./ErrorScreen";
 import Project from "./Project";
-import ProjectList from "./ProjectList";
-
+import SearchPage from "./SearchPage";
 function MainPage() {
   return (
     <Router>
@@ -25,8 +24,8 @@ function MainPage() {
             </Col>
             <Col xl={9}>
               <Routes>
-                <Route path="/" element={<ProjectList />} />
-                <Route path="/projects" element={<ProjectList />} />
+                <Route path="/" element={<SearchPage />} />
+                <Route path="/projects" element={<SearchPage />} />
                 <Route path="/create-project" element={<Project />} />
                 <Route path="/projects/new" element={<Project />} />
                 <Route path="/projects/edit/:id" element={<Project />} />

@@ -1,20 +1,20 @@
 export default {
-      header: {
+    header: {
         name: 'Project Information Management',
-      },
-      navigation: {
+    },
+    navigation: {
         title: 'Project list',
         new: 'New',
         project: 'Project',
         customer: 'Customer',
         supplier: 'Supplier',
-      },
-      projectList: {
+    },
+    projectList: {
         title: 'Projects list',
         searchPlaceholder: 'Project number, name, customer name',
         searchButton: 'Search Project',
         resetSearch: 'Reset Search',
-        statusAll: 'All',
+        statusAll: 'Project status',
         statusNew: 'New',
         statusPla: 'Planned',
         statusInp: 'In progress',
@@ -30,8 +30,8 @@ export default {
         confirmDelete: 'Are you sure you want to delete the selected project(s)?',
         warningDeleteNewOnly: 'Only projects with status "New" can be deleted.',
         noDataFound: 'No projects found matching the criteria.',
-      },
-      projectForm: {
+    },
+    projectForm: {
         newTitle: 'New Project',
         editTitle: 'Edit Project information',
         fieldNumber: 'Project Number',
@@ -50,12 +50,12 @@ export default {
         visasNotFound: 'The following visas do not exist: ',
         invalidDateRange: 'End date must be greater than or equal to Start date',
         optimisticLockConflict: 'The project has been modified by another user. Please refresh and try again.',
-      },
-      errorScreen: {
+    },
+    errorScreen: {
         unexpected: 'Unexpected error occurred',
         please: 'Please',
         contact: 'contact your administrator',
         or: 'or',
         back: 'back to search project',
-      },
-    };
+    },
+};
