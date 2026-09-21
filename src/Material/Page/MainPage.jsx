@@ -18,11 +18,11 @@ function MainPage() {
           </Row>
 
           <Row>
-            <Col xl={1} />
-            <Col xl={2}>
+            <Col xl={1} className="d-none d-xl-block" />
+            <Col xl={2} lg={3} md={3} sm={12} xs={12} className="mb-3 mb-md-0">
               <Sidebar />
             </Col>
-            <Col xl={9}>
+            <Col xl={8} lg={9} md={9} sm={12} xs={12}>
               <Routes>
                 <Route path="/" element={<SearchPage />} />
                 <Route path="/projects" element={<SearchPage />} />
@@ -33,6 +33,7 @@ function MainPage() {
                 <Route path="*" element={<ErrorScreen />} />
               </Routes>
             </Col>
+            <Col xl={1} className="d-none d-xl-block" />
           </Row>
         </Container>
       </div>

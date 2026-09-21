@@ -74,13 +74,14 @@ function ProjectSearchBar() {
                 </Col>
 
                 <Col md={4} lg={5} sm={12} className="d-flex align-items-center">
-                    <button type="submit" className="btn btn-pim-primary mr-4">
+                    <button type="submit" className="btn btn-pim-primary mr-4" style={{ minWidth: "175px", whiteSpace: "nowrap" }}>
                         <Translate content="projectList.searchButton" />
                     </button>
                     <button
                         type="button"
                         onClick={handleReset}
                         className="btn btn-pim-link"
+                        style={{ minWidth: "190px", textAlign: "left", whiteSpace: "nowrap" }}
                     >
                         <Translate content="projectList.resetSearch" />
                     </button>

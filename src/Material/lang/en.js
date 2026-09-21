@@ -48,11 +48,8 @@ export default {
         btnCreate: 'Create Project',
         btnSave: 'Save',
         mandatoryNotice: 'Please enter all the mandatory fields (*)',
-        numberAlreadyExists: 'The project number already existed. Please select a different project number',
-        visasNotFound: 'The following visas do not exist: ',
         invalidDateRange: 'End date must be greater than or equal to Start date',
         invalidProjectNumber: 'Project number must be a positive number with up to 4 digits (1 - 9999)',
-        optimisticLockConflict: 'The project has been modified by another user. Please refresh and try again.',
         selectGroup: 'Select group',
     },
     errorScreen: {

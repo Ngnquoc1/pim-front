@@ -26,12 +26,14 @@
 .headerRightActions {
     display: flex;
     align-items: center;
-    /* padding-right: 35px; */
+    padding-right: 35px;
 }
 
 .langSwitch {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    width: 60px;
     margin-right: 125px;
     font-size: 14px;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -66,6 +68,9 @@
 }
 
 .helpLink {
+    display: inline-block;
+    width: 60px;
+    text-align: center;
     margin-right: 48px;
     color: #2F85FA;
     font-size: 14px;
@@ -73,6 +78,7 @@
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     text-decoration: none;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 .helpLink:hover {
@@ -81,12 +87,16 @@
 }
 
 .logoutLink {
+    display: inline-block;
+    width: 115px;
+    text-align: right;
     color: #999999;
     font-size: 14px;
     font-weight: 600;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     text-decoration: none;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 .logoutLink:hover {
@@ -96,4 +106,69 @@
 
 .colNoPadding {
     padding: 0 !important;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 1199px) {
+    .headerRightActions {
+        padding-right: 15px;
+    }
+
+    .langSwitch {
+        margin-right: 40px;
+    }
+
+    .helpLink {
+        margin-right: 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    .content {
+        padding: 10px 0;
+    }
+
+    .name {
+        font-size: 18px;
+        white-space: normal;
+    }
+
+    .logo {
+        margin-right: 15px;
+        max-height: 40px;
+    }
+
+    .headerRightActions {
+        padding-right: 0;
+        margin-top: 10px;
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .langSwitch {
+        margin-right: 25px;
+    }
+
+    .helpLink {
+        margin-right: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .name {
+        font-size: 16px;
+    }
+
+    .langSwitch {
+        margin-right: 15px;
+        font-size: 13px;
+    }
+
+    .helpLink, .logoutLink {
+        font-size: 13px;
+    }
+
+    .helpLink {
+        margin-right: 15px;
+    }
 }

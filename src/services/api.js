@@ -1,4 +1,5 @@
 import axios from "axios";
+import counterpart from "counterpart";
 
 // Handle CJS/ESM interop in Jest with Axios 1.x
 const getAxiosInstance = () => {
@@ -26,6 +27,16 @@ const getAxiosInstance = () => {
 const api = getAxiosInstance();
 
 if (api.interceptors) {
+    // Dynamically attach Accept-Language header based on active locale
+    api.interceptors.request.use(
+        (config) => {
+            config.headers = config.headers || {};
+            config.headers["Accept-Language"] = counterpart.getLocale();
+            return config;
+        },
+        (error) => Promise.reject(error)
+    );
+
     api.interceptors.response.use(
         (response) => response.data,
         (error) => {

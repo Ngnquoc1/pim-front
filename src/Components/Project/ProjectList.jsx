@@ -61,7 +61,7 @@ export const ProjectList = () => {
       console.error("Delete failed: ", error);
       // Handle business errors (4xx) with user alert (5xx errors are handled globally by api.js)
       if (error.response && error.response.status < 500) {
-        alert(error.response.data?.message || counterpart.translate("projectList.warningDeleteNewOnly"));
+        alert(error.response.data?.message || "Delete failed");
       }
     }
   };
@@ -119,7 +119,7 @@ export const ProjectList = () => {
                 </th>
 
                 {/* Delete column */}
-                <th className="text-center align-middle" style={{ width: "70px" }}>
+                <th className="text-center align-middle" style={{ width: "95px" }}>
                   <Translate content="projectList.colDelete" />
                 </th>
               </tr>

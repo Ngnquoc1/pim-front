@@ -15,7 +15,7 @@ body {
 /* Primary Button (Search Project, Create Project, Save) */
 .btn-pim-primary {
     height: 35px;
-    padding: 6px 36px !important;
+    padding: 6px 20px !important;
     background: linear-gradient(180deg, #0086ca 0%, #0066cc 100%) !important;
     border: 1px solid #005bb5 !important;
     color: #ffffff !important;
@@ -30,6 +30,7 @@ body {
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    white-space: nowrap !important;
 }
 
 .btn-pim-primary:hover {
@@ -49,7 +50,7 @@ body {
 /* Secondary Button (Cancel) */
 .btn-pim-secondary {
     height: 35px;
-    padding: 6px 24px !important;
+    padding: 6px 20px !important;
     background: linear-gradient(180deg, #ffffff 0%, #f4f4f4 50%, #ebebeb 100%) !important;
     border: 1px solid #b9b9b9 !important;
     color: #333333 !important;
@@ -64,6 +65,7 @@ body {
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    white-space: nowrap !important;
 }
 
 .btn-pim-secondary:hover {

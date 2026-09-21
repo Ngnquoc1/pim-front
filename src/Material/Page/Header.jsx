@@ -17,8 +17,8 @@ function Header() {
     <div className={styles.content}>
       <Container fluid>
         <Row className="align-items-center">
-          <Col xl={1} />
-          <Col xl={10} className="d-flex align-items-center justify-content-between">
+          <Col xl={1} className="d-none d-xl-block" />
+          <Col xl={10} lg={12} md={12} sm={12} xs={12} className="d-flex align-items-center justify-content-between flex-wrap">
             <div className={`d-flex align-items-center ${styles.headerBrand}`}>
               <img className={styles.logo} src={logo} alt="logo" />
               <p className={`m-0 ${styles.name}`}>
@@ -64,7 +64,7 @@ function Header() {
               </a>
             </div>
           </Col>
-          <Col xl={1} />
+          <Col xl={1} className="d-none d-xl-block" />
         </Row>
       </Container>
     </div>

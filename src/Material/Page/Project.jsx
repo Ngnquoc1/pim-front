@@ -67,17 +67,8 @@ export default function Project() {
       navigate("/projects");
     } catch (error) {
       console.error("Save project failed: ", error);
-      if (error.response) {
-        const { status, data } = error.response;
-        if (status === 400) {
-          // Business validation error (duplicate number, invalid visas)
-          setServerError(data?.message || "Validation failed");
-        } else if (status === 409) {
-          // Optimistic locking conflict
-          setServerError(
-            counterpart.translate("projectForm.optimisticLockConflict")
-          );
-        }
+      if (error.response && error.response.status < 500) {
+        setServerError(error.response.data?.message || "Operation failed");
       }
     }
   };

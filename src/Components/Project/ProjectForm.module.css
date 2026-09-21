@@ -2,7 +2,8 @@
 .projectFormContainer {
     padding: 15px 30px 60px 30px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    max-width: 900px;
+    width: 100%;
+    max-width: 852px; /* Right edge of inputs and Create button aligns vertically with EN|FR at maximum width */
 }
 
 /* Page Title */
@@ -17,20 +18,22 @@
 .projectFormDivider {
     border: 0;
     border-top: 1px solid #e0e0e0;
-    margin-bottom: 35px;
+    margin-bottom: 38px;
+    width: 100%;
 }
 
-/* Row Layout: Fixed 170px label column, rest is input area */
+/* Row Layout: 38px vertical spacing between rows per us_1_guide.jpg */
 .projectFormRow {
     display: flex;
     align-items: center;
-    margin-bottom: 35px;
-    height: 30px;
+    margin-bottom: 38px; /* 38px spacing per design guide */
+    height: 30px; /* Standard 30px row height */
+    width: 100%;
 }
 
 /* Form Labels - Segoe UI, 14px, semibold, #666666 */
 .projectFormLabel {
-    width: 170px;
+    width: 200px;
     flex-shrink: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 14px;
@@ -51,12 +54,13 @@
 .projectInputArea {
     display: flex;
     align-items: center;
-    width: 580px;
+    flex: 1;
+    width: calc(100% - 200px);
 }
 
 /* Standard Input & Select - Exact Height 30px */
 .formControl {
-    height: 30px !important;
+    height: 30px !important; /* Standard 30px input field height */
     padding: 2px 8px;
     font-size: 13px;
     border: 1px solid #cccccc;
@@ -75,60 +79,82 @@
     border-color: #dc3545 !important;
 }
 
-/* Line 1 to Line 2 width (Short Inputs: Number, Group, Status, Start Date, End Date) */
+/* Equal-width short fields (Project Number, Group, Status, Start Date, End Date = 200px) */
 .inputShort {
-    width: 180px !important;
+    width: 200px !important; /* Fixed 200px width from Line 1 to Line 2 */
     flex-shrink: 0;
 }
 
-/* Line 1 to Line 3 width (Full-width Inputs: Name, Customer, Members) */
+/* Full-width inputs (Project Name, Customer, Members) extending to Line 3 (aligned with EN|FR) */
 .inputFull {
-    width: 580px !important;
+    width: 100% !important;
 }
 
-/* Date Row: Start Date at Line 1-2, End Date touches Line 3 */
+/* Date Row: Start Date (200px) on left, End Date (200px) flush right at Line 3 */
 .dateRowContainer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 580px;
+    width: 100%;
 }
 
 .dateGroupRight {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+}
+
+.dateGroupRight .inputShort {
+    width: 200px !important; /* Identical 200px width matching Start Date */
+    flex-shrink: 0;
 }
 
 .dateSeparatorLabel {
+    display: inline-block;
+    width: 90px;
+    text-align: right;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 14px;
     font-weight: 600;
     color: #666666;
     margin-right: 15px;
     margin-bottom: 0;
+    white-space: nowrap;
 }
 
-/* Action Buttons Container - Aligned to Line 3 */
+/* Action Buttons Container - Aligned to Line 3 (100% right edge of form) */
 .formActionsWrapper {
-    width: 750px;
+    width: 100%;
     display: flex;
     justify-content: flex-end;
-    margin-top: 55px;
+    margin-top: 45px;
 }
 
-/* Form-specific sizing for buttons */
+/* Form-specific sizing for buttons - fixed dimensions prevent shifting on language change */
 .btnCancelCustom {
-    min-width: 130px;
+    width: 140px;
+    height: 35px;
     margin-right: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 16px !important;
+    white-space: nowrap !important;
 }
 
 .btnSubmitCustom {
-    min-width: 140px;
+    width: 175px;
+    height: 35px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 16px !important;
+    white-space: nowrap !important;
 }
 
 /* Global Error Banner */
 .projectErrorAlert {
-    width: 750px;
+    width: 100%;
     padding: 8px 16px;
     font-size: 13px;
     border-radius: 4px;
@@ -155,4 +181,73 @@
 
 .closeBtn:hover {
     opacity: 1;
+}
+
+/* ========================================================
+   RESPONSIVE MEDIA QUERIES (Mobile & Tablet)
+   ======================================================== */
+@media (max-width: 768px) {
+    .projectFormContainer {
+        padding: 15px 15px 40px 15px;
+    }
+
+    .projectFormRow {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        min-height: 30px;
+        margin-bottom: 24px;
+    }
+
+    .projectFormLabel {
+        width: 100%;
+        margin-bottom: 6px;
+    }
+
+    .projectInputArea {
+        width: 100%;
+    }
+
+    .inputShort {
+        width: 100% !important;
+        max-width: 100%;
+    }
+
+    .inputFull {
+        width: 100% !important;
+    }
+
+    .dateRowContainer {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        gap: 16px;
+    }
+
+    .dateGroupRight {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dateSeparatorLabel {
+        margin-bottom: 6px;
+        margin-right: 0;
+    }
+
+    .dateGroupRight .inputShort {
+        width: 100% !important;
+    }
+
+    .formActionsWrapper {
+        justify-content: stretch;
+        gap: 12px;
+        margin-top: 35px;
+    }
+
+    .btnCancelCustom, .btnSubmitCustom {
+        flex: 1;
+        min-width: 0;
+        margin-right: 0;
+    }
 }
