@@ -1,6 +1,8 @@
 export default {
     header: {
         name: 'Project Information Management',
+        help: 'Help',
+        logout: 'Log out',
     },
     navigation: {
         title: 'Project list',

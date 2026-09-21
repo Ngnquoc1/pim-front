@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Form, Row, Col } from "react-bootstrap";
 import Translate from "react-translate-component";
 import counterpart from "counterpart";
-import { useSearchCriteria, useProjectActions } from "../../store/useProjectStore";
+import { useSearchCriteria, useProjectActions, useLocale } from "../../store/useProjectStore";
 
 function ProjectSearchBar() {
+    useLocale(); // Trigger re-render when language changes
     const searchCriteria = useSearchCriteria();
     const { setSearchCriteria, resetSearchCriteria, fetchProjects } = useProjectActions();
 

@@ -1,8 +1,20 @@
 import { create } from 'zustand';
+import counterpart from 'counterpart';
 import projectService from '../services/projectService';
+import en from '../Material/lang/en';
+import fr from '../Material/lang/fr';
+
+// 1. Register translations globally
+counterpart.registerTranslations('en', en);
+counterpart.registerTranslations('fr', fr);
+
+// 2. Read saved locale from localStorage and synchronize counterpart immediately
+const savedLocale = localStorage.getItem('pim_locale') || 'en';
+counterpart.setLocale(savedLocale);
 
 export const useProjectStore = create((set, get) => ({
   // 1. Global State
+  locale: savedLocale,
   searchCriteria: {
     keyword: '',
     status: 'ALL',
@@ -14,6 +26,12 @@ export const useProjectStore = create((set, get) => ({
   // 2. Actions
   actions: {
     // 2.1 Synchronous Actions
+    setLocale: (locale) => {
+      localStorage.setItem('pim_locale', locale);
+      counterpart.setLocale(locale);
+      set({ locale });
+    },
+
     setSearchCriteria: (criteria) =>
       set((state) => ({
         searchCriteria: {
@@ -68,5 +86,6 @@ export const useProjects = () => useProjectStore((state) => state.projects);
 export const useSearchCriteria = () => useProjectStore((state) => state.searchCriteria);
 export const useProjectLoading = () => useProjectStore((state) => state.loading);
 export const useProjectError = () => useProjectStore((state) => state.error);
+export const useLocale = () => useProjectStore((state) => state.locale);
 
 export const useProjectActions = () => useProjectStore((state) => state.actions);

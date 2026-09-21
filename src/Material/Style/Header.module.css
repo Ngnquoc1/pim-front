@@ -1,20 +1,97 @@
 .content {
-    padding: 10px 0 10px 0;
-    border-bottom: 1px solid gainsboro;
+    padding: 15px 0;
+    border-bottom: 1px solid #e5e5e5;
 }
 
-.name {
-    margin-top: 25px;
-    font-size: x-large;
-    width: 100vh;
-    font-weight: 700;
-    color: #666666;
+.headerBrand {
+    display: flex;
+    align-items: center;
 }
 
 .logo {
-    margin-top: 10px;
-    margin-left: 10px;
-    align-content: center;
+    margin: 0 25px 0 0;
+    display: block;
+}
+
+.name {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #666666;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    white-space: nowrap;
+    line-height: 1.2;
+}
+
+.headerRightActions {
+    display: flex;
+    align-items: center;
+    /* padding-right: 35px; */
+}
+
+.langSwitch {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 125px;
+    font-size: 14px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.langItem {
+    transition: color 0.15s ease-in-out;
+    user-select: none;
+}
+
+.langActive {
+    color: #666666;
+    font-weight: 700;
+    cursor: default;
+}
+
+.langLink {
+    color: #2F85FA;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.langLink:hover {
+    text-decoration: underline;
+}
+
+.langDivider {
+    margin: 0 6px;
+    color: #cccccc;
+    font-weight: 400;
+    user-select: none;
+}
+
+.helpLink {
+    margin-right: 48px;
+    color: #2F85FA;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.helpLink:hover {
+    color: #1a68d1;
+    text-decoration: underline;
+}
+
+.logoutLink {
+    color: #999999;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.logoutLink:hover {
+    color: #666666;
+    text-decoration: underline;
 }
 
 .colNoPadding {

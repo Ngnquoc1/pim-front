@@ -3,10 +3,11 @@ import { useForm } from "react-hook-form";
 import Translate from "react-translate-component";
 import counterpart from "counterpart";
 import groupService from "../../services/groupService";
+import { useLocale } from "../../store/useProjectStore";
 import styles from "./ProjectForm.module.css";
 
 function ProjectForm({ isEditMode, onCancel, onSubmit, serverError, projectData }) {
-
+  useLocale(); // Trigger re-render when language changes
   const [groups, setGroups] = useState([]);
   const [dismissedErrors, setDismissedErrors] = useState({});
 

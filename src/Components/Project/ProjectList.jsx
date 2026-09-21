@@ -5,11 +5,12 @@ import counterpart from "counterpart";
 
 import TrashIcon from "../Common/TrashIcon";
 import ProjectListItem from "./ProjectListItem";
-import { useProjects, useProjectLoading, useProjectActions } from "../../store/useProjectStore";
+import { useProjects, useProjectLoading, useProjectActions, useLocale } from "../../store/useProjectStore";
 
 import styles from "./ProjectList.module.css";
 
 export const ProjectList = () => {
+  useLocale(); // Trigger re-render when language changes
   const projects = useProjects();
   const loading = useProjectLoading();
   const { deleteProjects } = useProjectActions();
