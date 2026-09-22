@@ -1,8 +1,11 @@
 import api from "./api";
 const employeeService = {
-    // GET /employees
-    getAllEmployees: () => {
-        return api.get('/employees');
+    // GET /employees/search?term=...
+    searchEmployees: (term, signal) => {
+        return api.get('/employees/search', {
+            params: { term },
+            signal,
+        });
     },
 };
 

@@ -51,6 +51,9 @@ export default {
         invalidDateRange: 'End date must be greater than or equal to Start date',
         invalidProjectNumber: 'Project number must be a positive number with up to 4 digits (1 - 9999)',
         selectGroup: 'Select group',
+        memberPlaceholder: 'Type visa or name to search (e.g. DTH, BHU)',
+        noEmployeeFound: 'No matching members found',
+        searching: 'Searching...',
     },
     errorScreen: {
         unexpected: 'Unexpected error occurred',

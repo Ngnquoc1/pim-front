@@ -152,36 +152,7 @@
     white-space: nowrap !important;
 }
 
-/* Global Error Banner */
-.projectErrorAlert {
-    width: 100%;
-    padding: 8px 16px;
-    font-size: 13px;
-    border-radius: 4px;
-    margin-bottom: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
 
-/* Dismiss / Close button on Error Banner */
-.closeBtn {
-    background: transparent;
-    border: none;
-    font-size: 20px;
-    font-weight: bold;
-    line-height: 1;
-    color: #721c24;
-    cursor: pointer;
-    padding: 0;
-    margin-left: 15px;
-    opacity: 0.6;
-    transition: opacity 0.15s ease;
-}
-
-.closeBtn:hover {
-    opacity: 1;
-}
 
 /* ========================================================
    RESPONSIVE MEDIA QUERIES (Mobile & Tablet)

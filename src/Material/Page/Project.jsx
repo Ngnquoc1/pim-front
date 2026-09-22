@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import counterpart from "counterpart";
 import ProjectForm from "../../Components/Project/ProjectForm";
 import projectService from "../../services/projectService";
 
@@ -49,11 +48,6 @@ export default function Project() {
       endDate: formData.endDate || null,
       version: formData.version,
       memberVisas: formData.members
-        ? formData.members
-            .split(",")
-            .map((v) => v.trim().toUpperCase())
-            .filter(Boolean)
-        : [],
     };
 
     try {

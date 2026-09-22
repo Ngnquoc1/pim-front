@@ -1,0 +1,91 @@
+/* ========================================================
+   GENERIC TAG AUTOCOMPLETE STYLES (MUI CHIP COMPATIBLE)
+   ======================================================== */
+.autocompleteWrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* Outer Tag Box container that wraps MUI Chips and inline input */
+.tagContainer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    min-height: 30px;
+    padding: 3px 6px;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    cursor: text;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.tagContainerFocus {
+    border-color: #0086ca !important;
+    box-shadow: 0 0 0 1px #0086ca !important;
+}
+
+.isInvalid {
+    border-color: #dc3545 !important;
+}
+
+/* Inline text input next to MUI Chips */
+.tagInput {
+    flex: 1;
+    min-width: 80px;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 13px;
+    color: #495057;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 2px 4px;
+    margin: 0;
+    height: 24px;
+}
+
+/* Dropdown list appearing below the container */
+.suggestionsDropdown {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    width: 100%;
+    max-height: 220px;
+    overflow-y: auto;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1050;
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+}
+
+/* Item format matching image5.png (e.g. MQD: Dang Vu Minh Quang) */
+.suggestionItem {
+    padding: 6px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #333333;
+    display: flex;
+    align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: background-color 0.15s ease;
+}
+
+.suggestionItem:hover,
+.suggestionItemActive {
+    background-color: #e8f4fc;
+    color: #0086ca;
+}
+
+.suggestionStatus {
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #888888;
+    font-style: italic;
+    text-align: center;
+}

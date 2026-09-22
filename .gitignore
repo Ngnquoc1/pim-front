@@ -35,6 +35,7 @@ yarn-error.log*
 *.docx
 *.pdf
 *.md
+/zeadme
 !/README.md
 
 # batch scripts

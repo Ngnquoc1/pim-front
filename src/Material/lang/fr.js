@@ -54,6 +54,9 @@ export default {
         invalidProjectNumber: 'Le numéro de projet doit être un nombre positif jusqu\'à 4 chiffres (1 - 9999)',
         optimisticLockConflict: 'Le projet a été modifié par un autre utilisateur. Veuillez actualiser et réessayer.',
         selectGroup: 'Sélectionner le groupe',
+        memberPlaceholder: 'Saisissez le visa ou le nom (ex: DTH, BHU)',
+        noEmployeeFound: 'Aucun membre correspondant trouvé',
+        searching: 'Recherche en cours...',
     },
     errorScreen: {
         unexpected: 'Une erreur inattendue est survenue',

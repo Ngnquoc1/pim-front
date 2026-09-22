@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import Translate from "react-translate-component";
 import counterpart from "counterpart";
 import groupService from "../../services/groupService";
+import MemberAutocomplete from "./MemberAutocomplete";
+import ErrorAlert from "../Common/ErrorAlert";
 import { useLocale } from "../../store/useProjectStore";
 import styles from "./ProjectForm.module.css";
 
@@ -18,6 +20,7 @@ function ProjectForm({ isEditMode, onCancel, onSubmit, serverError, projectData 
   }, [serverError]);
 
   useEffect(() => {
+    // Fetch groups for Group dropdown
     groupService
       .getAllGroups()
       .then((response) => {
@@ -34,6 +37,7 @@ function ProjectForm({ isEditMode, onCancel, onSubmit, serverError, projectData 
     handleSubmit,
     watch,
     reset,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
@@ -41,7 +45,7 @@ function ProjectForm({ isEditMode, onCancel, onSubmit, serverError, projectData 
       name: "",
       customer: "",
       groupId: "",
-      members: "",
+      members: [], // Array of employee visas
       status: "NEW", // Default status for new projects
       startDate: "",
       endDate: "",
@@ -56,9 +60,9 @@ function ProjectForm({ isEditMode, onCancel, onSubmit, serverError, projectData 
         name: projectData.name,
         customer: projectData.customer,
         groupId: projectData.groupId,
-        members: projectData.memberVisas
-          ? Array.from(projectData.memberVisas).join(", ")
-          : "",
+        members: projectData.members
+          ? projectData.members.map((m) => m.visa)
+          : [],
         status: projectData.status,
         startDate: projectData.startDate,
         endDate: projectData.endDate || "",
@@ -103,75 +107,40 @@ function ProjectForm({ isEditMode, onCancel, onSubmit, serverError, projectData 
       <hr className={styles.projectFormDivider} />
 
       {/* Global Error Banners with Dismiss ('x') Button */}
-      {hasMandatoryError && !dismissedErrors.mandatory && (
-        <div className={`alert alert-danger ${styles.projectErrorAlert}`}>
-          <span>
-            <Translate content="projectForm.mandatoryNotice" />
-          </span>
-          <button
-            type="button"
-            className={styles.closeBtn}
-            aria-label="Close"
-            onClick={() =>
-              setDismissedErrors((prev) => ({ ...prev, mandatory: true }))
-            }
-          >
-            &times;
-          </button>
-        </div>
-      )}
+      <ErrorAlert
+        show={hasMandatoryError && !dismissedErrors.mandatory}
+        content="projectForm.mandatoryNotice"
+        onDismiss={() =>
+          setDismissedErrors((prev) => ({ ...prev, mandatory: true }))
+        }
+      />
 
-      {errors.endDate?.type === "validate" && !dismissedErrors.dateRange && (
-        <div className={`alert alert-danger ${styles.projectErrorAlert}`}>
-          <span>
-            <Translate content="projectForm.invalidDateRange" />
-          </span>
-          <button
-            type="button"
-            className={styles.closeBtn}
-            aria-label="Close"
-            onClick={() =>
-              setDismissedErrors((prev) => ({ ...prev, dateRange: true }))
-            }
-          >
-            &times;
-          </button>
-        </div>
-      )}
+      <ErrorAlert
+        show={errors.endDate?.type === "validate" && !dismissedErrors.dateRange}
+        content="projectForm.invalidDateRange"
+        onDismiss={() =>
+          setDismissedErrors((prev) => ({ ...prev, dateRange: true }))
+        }
+      />
 
-      {errors.projectNumber?.type === "validate" && !dismissedErrors.projectNumber && (
-        <div className={`alert alert-danger ${styles.projectErrorAlert}`}>
-          <span>
-            <Translate content="projectForm.invalidProjectNumber" />
-          </span>
-          <button
-            type="button"
-            className={styles.closeBtn}
-            aria-label="Close"
-            onClick={() =>
-              setDismissedErrors((prev) => ({ ...prev, projectNumber: true }))
-            }
-          >
-            &times;
-          </button>
-        </div>
-      )}
+      <ErrorAlert
+        show={
+          errors.projectNumber?.type === "validate" &&
+          !dismissedErrors.projectNumber
+        }
+        content="projectForm.invalidProjectNumber"
+        onDismiss={() =>
+          setDismissedErrors((prev) => ({ ...prev, projectNumber: true }))
+        }
+      />
 
-      {serverError && !dismissedErrors.server && (
-        <div className={`alert alert-danger ${styles.projectErrorAlert}`}>
-          <span>{serverError}</span>
-          <button
-            type="button"
-            className={styles.closeBtn}
-            aria-label="Close"
-            onClick={() =>
-              setDismissedErrors((prev) => ({ ...prev, server: true }))
-            }
-          >
-            &times;
-          </button>
-        </div>
-      )}
+      <ErrorAlert
+        show={Boolean(serverError) && !dismissedErrors.server}
+        message={serverError}
+        onDismiss={() =>
+          setDismissedErrors((prev) => ({ ...prev, server: true }))
+        }
+      />
 
       <form noValidate onSubmit={handleSubmit(handleFormSubmit, handleFormError)}>
         {/* Project Number */}
@@ -268,26 +237,29 @@ function ProjectForm({ isEditMode, onCancel, onSubmit, serverError, projectData 
               <option value="">{counterpart.translate("projectForm.selectGroup")}</option>
               {groups.map((group) => (
                 <option key={group.id} value={group.id}>
-                  Group {group.id}
+                  Group - {group.groupLeaderVisa}
                 </option>
               ))}
             </select>
           </div>
         </div>
 
-        {/* Members */}
+        {/* Members Autocomplete Component */}
         <div className={styles.projectFormRow}>
           <label className={styles.projectFormLabel}>
             <Translate content="projectForm.fieldMembers" />
           </label>
           <div className={styles.projectInputArea}>
-            <input
-              type="text"
-              placeholder="e.g. DTH, BHU, JHV"
-              className={`form-control ${styles.formControl} ${styles.inputFull} ${
-                errors.members ? styles.isInvalid : ""
-              }`}
-              {...register("members")}
+            <MemberAutocomplete
+              value={watch("members") || []}
+              initialMembers={projectData?.members}
+              onChange={(val) =>
+                setValue("members", val, {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                })
+              }
+              isInvalid={!!errors.members}
             />
           </div>
         </div>
