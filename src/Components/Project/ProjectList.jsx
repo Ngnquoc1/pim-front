@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Table, Spinner } from "react-bootstrap";
 import Translate from "react-translate-component";
 import counterpart from "counterpart";
 
 import TrashIcon from "../Common/TrashIcon";
+import PaginationBar from "../Common/PaginationBar";
 import ProjectListItem from "./ProjectListItem";
-import { useProjects, useProjectLoading, useProjectActions, useLocale } from "../../store/useProjectStore";
+import { useProjects, useProjectLoading, useProjectActions, useLocale, useSortConfig } from "../../store/useProjectStore";
+
+import { sortProjects } from "../../utils/sortUtils";
 
 import styles from "./ProjectList.module.css";
 
@@ -13,10 +16,31 @@ export const ProjectList = () => {
   useLocale(); // Trigger re-render when language changes
   const projects = useProjects();
   const loading = useProjectLoading();
-  const { deleteProjects } = useProjectActions();
+  const sortConfig = useSortConfig();
+  const { deleteProjects, setSortConfig } = useProjectActions();
 
   // Selected project IDs state
   const [selectedIds, setSelectedIds] = useState([]);
+
+  const sortedProjects = useMemo(() => {
+    return sortProjects(projects, sortConfig);
+  }, [projects, sortConfig]);
+
+  const renderSortIcon = (field) => {
+    const isActive = sortConfig.field === field;
+    if (isActive) {
+      return (
+        <span className={`${styles.sortIcon} ${styles.sortIconActive}`}>
+          {sortConfig.direction === "asc" ? "▲" : "▼"}
+        </span>
+      );
+    }
+    return (
+      <span className={`${styles.sortIcon} ${styles.sortIconInactive}`}>
+        ↕
+      </span>
+    );
+  }
 
   // Toggle single row selection
   const handleToggleSelected = (id) => {
@@ -94,28 +118,74 @@ export const ProjectList = () => {
                 </th>
 
                 {/* Number column */}
-                <th className="text-right align-middle" style={{ width: "100px" }}>
+                <th
+                  className="text-right align-middle"
+                  style={{ width: "100px" , cursor: "pointer"}}
+                  onClick={() => setSortConfig("projectNumber")}
+                  aria-sort={sortConfig.field === "projectNumber"
+                    ? sortConfig.direction === "asc" ? "ascending" : "descending"
+                    : "none"
+                  }>
                   <Translate content="projectList.colNumber" />
+                  {renderSortIcon("projectNumber")}
                 </th>
 
                 {/* Name column */}
-                <th className="text-left align-middle">
+                <th
+                  className={`text-left align-middle ${styles.sortableHeader}`}
+                  onClick={() => setSortConfig("name")}
+                  aria-sort={sortConfig.field === "name"
+                    ? sortConfig.direction === "asc" ? "ascending" : "descending"
+                    : "none"
+                  }
+                >
                   <Translate content="projectList.colName" />
+                  {renderSortIcon("name")}
                 </th>
 
                 {/* Status column */}
-                <th className="text-left align-middle" style={{ width: "140px" }}>
+                <th
+                  className={`text-left align-middle ${styles.sortableHeader}`}
+                  style={{ width: "140px" }}
+                  onClick={() => setSortConfig("status")}
+                  aria-sort={
+                    sortConfig.field === "status"
+                      ? sortConfig.direction === "asc" ? "ascending" : "descending"
+                      : "none"
+                  }
+                >
                   <Translate content="projectList.colStatus" />
+                  {renderSortIcon("status")}
                 </th>
 
                 {/* Customer column */}
-                <th className="text-left align-middle" style={{ width: "220px" }}>
+                <th
+                  className={`text-left align-middle ${styles.sortableHeader}`}
+                  style={{ width: "220px" }}
+                  onClick={() => setSortConfig("customer")}
+                  aria-sort={
+                    sortConfig.field === "customer"
+                      ? sortConfig.direction === "asc" ? "ascending" : "descending"
+                      : "none"
+                  }
+                >
                   <Translate content="projectList.colCustomer" />
+                  {renderSortIcon("customer")}
                 </th>
 
                 {/* Start date column */}
-                <th className="text-center align-middle" style={{ width: "130px" }}>
+                <th
+                  className={`text-center align-middle ${styles.sortableHeader}`}
+                  style={{ width: "130px" }}
+                  onClick={() => setSortConfig("startDate")}
+                  aria-sort={
+                    sortConfig.field === "startDate"
+                      ? sortConfig.direction === "asc" ? "ascending" : "descending"
+                      : "none"
+                  }
+                >
                   <Translate content="projectList.colStartDate" />
+                  {renderSortIcon("startDate")}
                 </th>
 
                 {/* Delete column */}
@@ -125,14 +195,14 @@ export const ProjectList = () => {
               </tr>
             </thead>
             <tbody>
-              {projects.length === 0 ? (
+              {sortedProjects.length === 0 ? (
                 <tr>
                   <td colSpan="7" className="text-center py-4 text-muted">
                     <Translate content="projectList.noDataFound" />
                   </td>
                 </tr>
               ) : (
-                projects.map((project) => (
+                sortedProjects.map((project) => (
                   <ProjectListItem
                     key={project.id}
                     project={project}
@@ -144,6 +214,7 @@ export const ProjectList = () => {
               )}
             </tbody>
           </Table>
+          <PaginationBar />
 
           {/* Bulk delete banner */}
           {selectedIds.length > 0 && (

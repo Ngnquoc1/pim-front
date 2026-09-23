@@ -1,13 +1,15 @@
 import api from "./api";
 
 const projectService = {
-    searchProjects: async (keyword, status) => {
-        const params={};
-        if (keyword && keyword.trim() !== "") {
-            params.keyword = keyword;
-        }
-        if (status && status.trim() !== "ALL") {
-            params.status = status;
+    searchProjects: async (keyword, status, page = 0, size = 10, sort = 'projectNumber,asc') => {
+        const params = {
+          keyword: (keyword || '').trim(),
+          page,
+          size,
+          sort,
+        };
+        if (status && status !== 'ALL') {
+          params.status = status;
         }
         return await api.get("/projects/search", { params });
     },

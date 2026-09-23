@@ -24,3 +24,40 @@
 .projectGridTable tbody tr:hover {
     background-color: #f0f7ff;
 }
+
+/* Sortable table header */
+.sortableHeader {
+    cursor: pointer;
+    user-select: none; /* Prevent text selection on rapid clicking */
+    transition: background-color 0.15s ease-in-out;
+}
+
+.sortableHeader:hover {
+    background-color: #eaeef5 !important;
+    color: #2f5597; /* ELCA blue on hover */
+}
+
+/* Sort indicator icon */
+.sortIcon {
+    display: inline-block;
+    margin-left: 6px;
+    font-size: 10px;
+    vertical-align: middle;
+}
+
+/* Active sorted column arrow */
+.sortIconActive {
+    color: #2f5597;
+    font-weight: bold;
+}
+
+/* Inactive sort indicator */
+.sortIconInactive {
+    color: #b0b0b0;
+    opacity: 0.5;
+}
+
+.sortableHeader:hover .sortIconInactive {
+    opacity: 1;
+    color: #2f5597;
+}

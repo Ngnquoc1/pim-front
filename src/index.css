@@ -14,7 +14,7 @@ body {
 
 /* Primary Button (Search Project, Create Project, Save) */
 .btn-pim-primary {
-    height: 35px;
+    height: 38px;
     padding: 6px 20px !important;
     background: linear-gradient(180deg, #0086ca 0%, #0066cc 100%) !important;
     border: 1px solid #005bb5 !important;
@@ -49,7 +49,7 @@ body {
 
 /* Secondary Button (Cancel) */
 .btn-pim-secondary {
-    height: 35px;
+    height: 38px;
     padding: 6px 20px !important;
     background: linear-gradient(180deg, #ffffff 0%, #f4f4f4 50%, #ebebeb 100%) !important;
     border: 1px solid #b9b9b9 !important;

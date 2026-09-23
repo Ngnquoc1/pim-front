@@ -19,6 +19,18 @@ export const useProjectStore = create((set, get) => ({
     keyword: '',
     status: 'ALL',
   },
+  pagination: {
+    pageNumber: 0,
+    pageSize: 10,
+    totalElements: 0,
+    totalPages: 0,
+    first: true,
+    last: true,
+  },
+  sortConfig: {
+    field: 'projectNumber',
+    direction: 'asc',
+  },
   projects: [],
   loading: false,
   error: null,
@@ -48,15 +60,64 @@ export const useProjectStore = create((set, get) => ({
         },
       }),
 
+    setSortConfig: (field) => {
+      const state = get();
+      const direction =
+        state.sortConfig.field === field && state.sortConfig.direction === 'asc'
+          ? 'desc'
+          : 'asc';
+      const newSortConfig = { field, direction };
+      set({ sortConfig: newSortConfig });
+      get().actions.fetchProjects({ page: 0, sort: `${field},${direction}` });
+    },
+    resetSortConfig: () =>
+      set({
+        sortConfig: {
+          field: 'projectNumber',
+          direction: 'asc',
+        },
+      }),
+
+    setPage: (pageNumber) => {
+      get().actions.fetchProjects({ page: pageNumber });
+    },
+
+    setPageSize: (pageSize) => {
+      get().actions.fetchProjects({ page: 0, size: pageSize });
+    },
+
     setProjects: (projects) => set({ projects: projects || [] }),
 
     // 2.2 Asynchronous Actions
-    fetchProjects: async (customCriteria) => {
+    fetchProjects: async (customParams = {}) => {
       set({ loading: true, error: null });
       try {
-        const criteria = customCriteria !== undefined ? customCriteria : get().searchCriteria;
-        const data = await projectService.searchProjects(criteria.keyword, criteria.status);
-        set({ projects: data || [], loading: false });
+        const state = get();
+        const criteria = customParams.searchCriteria || state.searchCriteria;
+        const page = customParams.page !== undefined ? customParams.page : state.pagination.pageNumber;
+        const size = customParams.size !== undefined ? customParams.size : state.pagination.pageSize;
+        const sort = customParams.sort || `${state.sortConfig.field},${state.sortConfig.direction}`;
+
+        const data = await projectService.searchProjects(
+          criteria.keyword,
+          criteria.status,
+          page,
+          size,
+          sort
+        );
+
+        set({
+          projects: data.content || [],
+          pagination: {
+            pageNumber: data.pageNumber,
+            pageSize: data.pageSize,
+            totalElements: data.totalElements,
+            totalPages: data.totalPages,
+            first: data.first,
+            last: data.last,
+          },
+          loading: false
+        });
         return data;
       } catch (err) {
         console.error('Failed to fetch projects in store:', err);
@@ -87,5 +148,6 @@ export const useSearchCriteria = () => useProjectStore((state) => state.searchCr
 export const useProjectLoading = () => useProjectStore((state) => state.loading);
 export const useProjectError = () => useProjectStore((state) => state.error);
 export const useLocale = () => useProjectStore((state) => state.locale);
-
+export const useSortConfig = () => useProjectStore((state) => state.sortConfig);
+export const usePagination = () => useProjectStore((state) => state.pagination);
 export const useProjectActions = () => useProjectStore((state) => state.actions);
