@@ -1,9 +1,8 @@
 /* Container for the Project Form */
 .projectFormContainer {
-    padding: 15px 30px 60px 30px;
+    padding: 15px 0 60px 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     width: 100%;
-    max-width: 852px; /* Right edge of inputs and Create button aligns vertically with EN|FR at maximum width */
 }
 
 /* Page Title */
@@ -27,7 +26,8 @@
     display: flex;
     align-items: center;
     margin-bottom: 38px; /* 38px spacing per design guide */
-    height: 30px; /* Standard 30px row height */
+    min-height: 35px;
+    height: auto;
     width: 100%;
 }
 
@@ -41,6 +41,8 @@
     color: #666666;
     display: flex;
     align-items: center;
+    min-height: 35px;
+    align-self: flex-start;
     margin-bottom: 0;
 }
 
@@ -56,22 +58,31 @@
     align-items: center;
     flex: 1;
     width: calc(100% - 200px);
+    min-height: 35px;
 }
 
-/* Standard Input & Select - Exact Height 30px */
+/* Standard Input & Select - Unified Height 35px */
 .formControl {
-    height: 30px !important; /* Standard 30px input field height */
+    height: 35px !important; /* Unified 35px input field height */
     padding: 2px 8px;
     font-size: 13px;
     border: 1px solid #cccccc;
     border-radius: 4px;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
     outline: none;
+    box-sizing: border-box !important;
+}
+
+.formControl:disabled {
+    background-color: #f2f2f2 !important;
+    color: #666666 !important;
+    border-color: #dcdcdc !important;
+    cursor: not-allowed !important;
 }
 
 .formControl:focus {
     border-color: #0086ca;
-    box-shadow: 0 0 0 1px #0086ca;
+    box-shadow: 0 0 0 0.2rem rgba(0, 134, 202, 0.2);
 }
 
 /* Red border when validation fails */
@@ -133,23 +144,11 @@
 /* Form-specific sizing for buttons - fixed dimensions prevent shifting on language change */
 .btnCancelCustom {
     width: 140px;
-    height: 35px;
     margin-right: 24px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6px 16px !important;
-    white-space: nowrap !important;
 }
 
 .btnSubmitCustom {
     width: 175px;
-    height: 35px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6px 16px !important;
-    white-space: nowrap !important;
 }
 
 
@@ -202,6 +201,8 @@
     }
 
     .dateSeparatorLabel {
+        width: 100%;
+        text-align: left;
         margin-bottom: 6px;
         margin-right: 0;
     }

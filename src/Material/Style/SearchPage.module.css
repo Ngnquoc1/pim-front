@@ -1,0 +1,19 @@
+.searchPageContainer {
+    padding-top: 15px;
+    padding-bottom: 30px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.pageTitle {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333333;
+    margin-bottom: 14px;
+}
+
+.pageDivider {
+    border: 0;
+    border-top: 1px solid #e0e0e0;
+    margin-bottom: 24px;
+    width: 100%;
+}

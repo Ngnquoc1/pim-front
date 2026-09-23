@@ -4,6 +4,7 @@ import Translate from "react-translate-component";
 import ProjectSearchBar from "../../Components/Project/ProjectSearchBar";
 import ProjectList from "../../Components/Project/ProjectList";
 import { useProjectActions } from "../../store/useProjectStore";
+import styles from "../Style/SearchPage.module.css";
 
 function SearchPage() {
   const { fetchProjects } = useProjectActions();
@@ -13,12 +14,13 @@ function SearchPage() {
   }, [fetchProjects]);
 
   return (
-    <Container fluid className="search-page-container py-3">
+    <Container fluid className={styles.searchPageContainer}>
       <Row>
         <Col>
-          <h3 className="mb-4 pb-2 border-bottom">
+          <h2 className={styles.pageTitle}>
             <Translate content="projectList.title" />
-          </h3>
+          </h2>
+          <hr className={styles.pageDivider} />
           
           <ProjectSearchBar />
 

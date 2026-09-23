@@ -14,7 +14,7 @@ body {
 
 /* Primary Button (Search Project, Create Project, Save) */
 .btn-pim-primary {
-    height: 38px;
+    height: 35px !important;
     padding: 6px 20px !important;
     background: linear-gradient(180deg, #0086ca 0%, #0066cc 100%) !important;
     border: 1px solid #005bb5 !important;
@@ -25,12 +25,14 @@ body {
     border-radius: 4px !important;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) !important;
     outline: none !important;
-    transition: background 0.15s ease-in-out;
+    transition: background 0.15s ease-in-out, border-color 0.15s ease-in-out;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     white-space: nowrap !important;
+    box-sizing: border-box !important;
+    user-select: none;
 }
 
 .btn-pim-primary:hover {
@@ -49,7 +51,7 @@ body {
 
 /* Secondary Button (Cancel) */
 .btn-pim-secondary {
-    height: 38px;
+    height: 35px !important;
     padding: 6px 20px !important;
     background: linear-gradient(180deg, #ffffff 0%, #f4f4f4 50%, #ebebeb 100%) !important;
     border: 1px solid #b9b9b9 !important;
@@ -60,21 +62,25 @@ body {
     border-radius: 4px !important;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08) !important;
     outline: none !important;
-    transition: background 0.15s ease-in-out;
+    transition: background 0.15s ease-in-out, border-color 0.15s ease-in-out;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     white-space: nowrap !important;
+    box-sizing: border-box !important;
+    user-select: none;
 }
 
 .btn-pim-secondary:hover {
     background: linear-gradient(180deg, #f4f4f4 0%, #eaeaea 100%) !important;
     color: #333333 !important;
+    border-color: #a8a8a8 !important;
 }
 
-/* Link Button (Reset Search) */
+/* Link Button (Reset Search, Toggle Buttons) */
 .btn-pim-link {
+    height: 35px !important;
     background: transparent !important;
     border: none !important;
     color: #2f85fa !important;
@@ -86,11 +92,91 @@ body {
     padding: 0 !important;
     box-shadow: none !important;
     outline: none !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+    user-select: none;
+    transition: color 0.15s ease-in-out;
 }
 
 .btn-pim-link:hover {
     color: #1a6edb !important;
     text-decoration: underline !important;
+}
+
+/* Danger Link Button (Bulk Delete Action) */
+.btn-pim-danger-link {
+    background: transparent !important;
+    border: none !important;
+    color: #dc3545 !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    outline: none !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-sizing: border-box !important;
+    user-select: none;
+    transition: color 0.15s ease-in-out;
+}
+
+.btn-pim-danger-link:hover {
+    color: #bd2130 !important;
+    text-decoration: underline !important;
+}
+
+/* Square Icon Button (e.g. Advanced Filter Toggle, 35px x 35px) */
+.btn-pim-icon {
+    height: 35px !important;
+    width: 35px !important;
+    min-width: 35px !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    border: 1px solid #ced4da !important;
+    color: #495057 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+    outline: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    box-sizing: border-box !important;
+    user-select: none;
+    position: relative;
+    transition: background 0.15s ease-in-out, border-color 0.15s ease-in-out, color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+}
+
+.btn-pim-icon:hover {
+    background: #f0f7ff !important;
+    border-color: #0086ca !important;
+    color: #0086ca !important;
+}
+
+.btn-pim-icon.active,
+.btn-pim-icon:active {
+    background: #e8f4fc !important;
+    border-color: #0086ca !important;
+    color: #0086ca !important;
+    box-shadow: 0 0 0 0.15rem rgba(0, 134, 202, 0.25) !important;
+}
+
+/* Badge dot on icon button for active filter indicator */
+.btn-pim-icon-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 7px;
+    height: 7px;
+    background-color: #0086ca;
+    border-radius: 50%;
+    border: 1px solid #ffffff;
 }
 
 /* Focus and active outline cleanup */
@@ -99,7 +185,11 @@ body {
 .btn-pim-secondary:focus,
 .btn-pim-secondary:active,
 .btn-pim-link:focus,
-.btn-pim-link:active {
+.btn-pim-link:active,
+.btn-pim-danger-link:focus,
+.btn-pim-danger-link:active,
+.btn-pim-icon:focus,
+.btn-pim-icon:active {
     outline: none !important;
     box-shadow: none !important;
 }

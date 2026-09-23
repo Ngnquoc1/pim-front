@@ -119,8 +119,8 @@ export const ProjectList = () => {
 
                 {/* Number column */}
                 <th
-                  className="text-right align-middle"
-                  style={{ width: "100px" , cursor: "pointer"}}
+                  className={`text-right align-middle ${styles.sortableHeader}`}
+                  style={{ width: "100px" }}
                   onClick={() => setSortConfig("projectNumber")}
                   aria-sort={sortConfig.field === "projectNumber"
                     ? sortConfig.direction === "asc" ? "ascending" : "descending"
@@ -214,38 +214,28 @@ export const ProjectList = () => {
               )}
             </tbody>
           </Table>
-          <PaginationBar />
 
-          {/* Bulk delete banner */}
+          {/* Bulk delete banner directly under table per image7.png */}
           {selectedIds.length > 0 && (
-            <div className="bulk-delete-banner d-flex align-items-center mt-3 py-2 bg-light border">
-              {/* Left section: Selected items count */}
-              <div className="flex-grow-1 pl-3">
-                <span className="text-primary font-weight-bold">
-                  {selectedIds.length} <Translate content="projectList.itemsSelected" />
-                </span>
-              </div>
+            <div className={styles.bulkDeleteBanner}>
+              <span className={styles.selectedCount}>
+                {selectedIds.length} <Translate content="projectList.itemsSelected" />
+              </span>
 
-              {/* Action link: Delete selected items */}
-              <div className="pr-2">
-                <button
-                  type="button"
-                  onClick={() => handleDeleteProjects(selectedIds)}
-                  className="btn btn-link text-danger p-0 font-weight-bold text-decoration-none"
-                >
-                  <Translate content="projectList.deleteSelected" />
-                </button>
-              </div>
-
-              {/* Trash icon container: Exactly 70px width and centered to align with the table's Delete column */}
-              <div
-                className="d-flex justify-content-center align-items-center"
-                style={{ width: "70px", flexShrink: 0 }}
+              <button
+                type="button"
+                onClick={() => handleDeleteProjects(selectedIds)}
+                className="btn-pim-danger-link"
               >
-                <TrashIcon onClick={() => handleDeleteProjects(selectedIds)} />
-              </div>
+                <span>
+                  <Translate content="projectList.deleteSelected" />
+                </span>
+                <TrashIcon size={16} />
+              </button>
             </div>
           )}
+
+          <PaginationBar />
         </>
       )}
     </div>

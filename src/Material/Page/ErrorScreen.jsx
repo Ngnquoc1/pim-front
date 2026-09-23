@@ -2,17 +2,17 @@ import React from "react";
 import Translate from "react-translate-component";
 import { Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import "../Style/ErrorScreen.css";
+import styles from "../Style/ErrorScreen.module.css";
 import Image from "../Images/error.png";
 
 function ErrorScreen() {
   return (
-    <Container>
-      <Row>
-        <Col>
-          <img src={Image} alt="error" className="error" />
+    <Container className={styles.errorContainer}>
+      <Row className="align-items-center w-100">
+        <Col md={6} className="text-center">
+          <img src={Image} alt="error" className={styles.errorImage} />
         </Col>
-        <Col className="text-container">
+        <Col md={6} className={styles.textContainer}>
           <div>
             <span>
               <Translate content="errorScreen.unexpected" />
@@ -21,7 +21,7 @@ function ErrorScreen() {
           <span>
             <Translate content="errorScreen.please" />{" "}
           </span>
-          <span className="red-text">
+          <span className={styles.redText}>
             <Translate content="errorScreen.contact" />
           </span>
           <p />

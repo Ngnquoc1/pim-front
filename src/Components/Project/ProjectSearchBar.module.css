@@ -1,0 +1,44 @@
+/* ProjectSearchBar Component Styles */
+.searchBarContainer {
+  margin-bottom: 24px;
+}
+
+/* Primary search input */
+.searchInput {
+  height: 35px !important;
+  box-sizing: border-box !important;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 13px;
+  color: #333333;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  box-shadow: none;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.searchInput:focus {
+  border-color: #0086ca;
+  box-shadow: 0 0 0 0.2rem rgba(0, 134, 202, 0.2);
+  outline: none;
+}
+
+/* Status select dropdown */
+.statusSelect {
+  height: 35px !important;
+  box-sizing: border-box !important;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 13px;
+  color: #333333;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #ffffff;
+  padding: 2px 8px;
+}
+
+.statusSelect:focus {
+  border-color: #0086ca;
+  box-shadow: 0 0 0 0.2rem rgba(0, 134, 202, 0.2);
+  outline: none;
+}
+

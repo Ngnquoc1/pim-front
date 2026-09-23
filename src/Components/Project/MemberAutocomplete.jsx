@@ -3,11 +3,7 @@ import useDebouncedSearch from "../../hooks/useDebouncedSearch";
 import employeeService from "../../services/employeeService";
 import TagAutocomplete from "../Common/TagAutocomplete";
 
-/**
- * MemberAutocomplete Component (Thin Wrapper for Project Domain).
- * Connects useDebouncedSearch hook and employeeService with generic TagAutocomplete.
- * Encapsulates visa mapping and deduplication, emitting an array of visa strings.
- */
+
 const formatFullName = (emp) =>
   emp ? `${emp.firstName || ""} ${emp.lastName || ""}`.trim() : "";
 
@@ -50,8 +46,10 @@ const MemberAutocomplete = forwardRef(function MemberAutocomplete(
     clearSearch,
   } = useDebouncedSearch(employeeService.searchEmployees, 300);
 
-  // 3. Normalize selected visas: support Array natively (fallback to CSV string for backward compatibility)
-  const selectedVisas = Array.isArray(value)
+  // 3. Normalize selected visas: support Set and Array natively (fallback to CSV string for backward compatibility)
+  const selectedVisas = value instanceof Set
+    ? Array.from(value)
+    : Array.isArray(value)
     ? value
     : (value || "")
         .split(",")

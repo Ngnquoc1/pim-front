@@ -18,7 +18,14 @@ export const useProjectStore = create((set, get) => ({
   searchCriteria: {
     keyword: '',
     status: 'ALL',
+    groupLeaderVisa: '',
+    memberVisas: [],
+    startDateFrom: '',
+    startDateTo: '',
+    endDateFrom: '',
+    endDateTo: '',
   },
+  isAdvancedFilterOpen: false,
   pagination: {
     pageNumber: 0,
     pageSize: 10,
@@ -52,11 +59,19 @@ export const useProjectStore = create((set, get) => ({
         },
       })),
 
+    setIsAdvancedFilterOpen: (isAdvancedFilterOpen) => set({ isAdvancedFilterOpen }),
+
     resetSearchCriteria: () =>
       set({
         searchCriteria: {
           keyword: '',
           status: 'ALL',
+          groupLeaderVisa: '',
+          memberVisas: [],
+          startDateFrom: '',
+          startDateTo: '',
+          endDateFrom: '',
+          endDateTo: '',
         },
       }),
 
@@ -99,8 +114,7 @@ export const useProjectStore = create((set, get) => ({
         const sort = customParams.sort || `${state.sortConfig.field},${state.sortConfig.direction}`;
 
         const data = await projectService.searchProjects(
-          criteria.keyword,
-          criteria.status,
+          criteria,
           page,
           size,
           sort
@@ -150,4 +164,5 @@ export const useProjectError = () => useProjectStore((state) => state.error);
 export const useLocale = () => useProjectStore((state) => state.locale);
 export const useSortConfig = () => useProjectStore((state) => state.sortConfig);
 export const usePagination = () => useProjectStore((state) => state.pagination);
+export const useIsAdvancedFilterOpen = () => useProjectStore((state) => state.isAdvancedFilterOpen);
 export const useProjectActions = () => useProjectStore((state) => state.actions);

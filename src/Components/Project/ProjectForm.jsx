@@ -153,6 +153,8 @@ function ProjectForm({ isEditMode, onCancel, onSubmit, serverError, projectData 
             <input
               type="number"
               disabled={isEditMode}
+              tabIndex={isEditMode ? -1 : 0}
+              autoFocus={!isEditMode}
               className={`form-control ${styles.formControl} ${styles.inputShort} ${
                 errors.projectNumber ? styles.isInvalid : ""
               }`}
@@ -189,6 +191,7 @@ function ProjectForm({ isEditMode, onCancel, onSubmit, serverError, projectData 
             <input
               type="text"
               maxLength={50}
+              autoFocus={isEditMode}
               className={`form-control ${styles.formControl} ${styles.inputFull} ${
                 errors.name ? styles.isInvalid : ""
               }`}
