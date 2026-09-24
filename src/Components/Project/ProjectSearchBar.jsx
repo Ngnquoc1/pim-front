@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Row, Col } from "react-bootstrap";
 import Translate from "react-translate-component";
 import counterpart from "counterpart";
+import { useSearchParams } from "react-router-dom";
 import ProjectAdvancedFilter from "./ProjectAdvancedFilter";
 import FilterIcon from "../Common/FilterIcon";
 import {
@@ -44,6 +45,8 @@ function ProjectSearchBar() {
         endDateFrom: searchCriteria.endDateFrom || "",
         endDateTo: searchCriteria.endDateTo || "",
     });
+
+    const [, setSearchParams] = useSearchParams();
 
     const [dateError, setDateError] = useState("");
 
@@ -91,6 +94,24 @@ function ProjectSearchBar() {
         }
         setDateError("");
 
+        const paramsForUrl = {};
+
+        if (keyword.trim()) paramsForUrl.keyword = keyword.trim();
+        if (statusFilter !== 'ALL') paramsForUrl.status = statusFilter;
+        if (groupLeaderVisa.trim()) {
+            paramsForUrl.groupLeaderVisa = groupLeaderVisa.trim();
+        }
+        if (advancedValues.memberVisas.length > 0) {
+            paramsForUrl.memberVisas = memberVisas.join(",");
+        }
+        if (startDateFrom) paramsForUrl.startDateFrom = startDateFrom;
+        if (startDateTo) paramsForUrl.startDateTo = startDateTo;
+        if (endDateFrom) paramsForUrl.endDateFrom = endDateFrom;
+        if (endDateTo) paramsForUrl.endDateTo = endDateTo;
+        paramsForUrl.page = 0;
+
+        setSearchParams(paramsForUrl);
+
         const newCriteria = {
             keyword: keyword.trim(),
             status: statusFilter,
@@ -131,6 +152,7 @@ function ProjectSearchBar() {
             endDateTo: "",
         };
 
+        setSearchParams({});
         resetSearchCriteria();
         fetchProjects({ page: 0, searchCriteria: emptyCriteria }).catch(() => { });
     };
@@ -206,8 +228,8 @@ function ProjectSearchBar() {
                             advancedValues.endDateFrom ||
                             advancedValues.endDateTo
                         ) && !isAdvancedOpen && (
-                            <span className="btn-pim-icon-badge" />
-                        )}
+                                <span className="btn-pim-icon-badge" />
+                            )}
                     </button>
                 </Col>
             </Row>

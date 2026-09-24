@@ -30,10 +30,10 @@ function Sidebar() {
               <Nav.Link as={Link} to="/create-project">
                 <Translate content="navigation.project" />
               </Nav.Link>
-              <Nav.Link href="/customer">
+              <Nav.Link as={Link} to="/customer">
                 <Translate content="navigation.customer" />
               </Nav.Link>
-              <Nav.Link href="/supplier">
+              <Nav.Link as={Link} to="/supplier">
                 <Translate content="navigation.supplier" />
               </Nav.Link>
             </Col>

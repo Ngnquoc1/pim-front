@@ -28,9 +28,13 @@ export default function Project() {
     }
   }, [isEditMode, id]);
 
-  // Navigate back to project list screen (preserving search criteria)
+  // Navigate back to project list screen (preserving search criteria and URL)
   const handleCancel = () => {
-    navigate("/projects");
+    if (window.history.state && window.history.state.idx > 0) {
+      navigate(-1);
+    } else {
+      navigate("/projects");
+    }
   };
 
   // Handle form submission (Create or Update)

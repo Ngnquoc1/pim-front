@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import counterpart from 'counterpart';
 import projectService from '../services/projectService';
 import en from '../Material/lang/en';
@@ -12,7 +13,9 @@ counterpart.registerTranslations('fr', fr);
 const savedLocale = localStorage.getItem('pim_locale') || 'en';
 counterpart.setLocale(savedLocale);
 
-export const useProjectStore = create((set, get) => ({
+export const useProjectStore = create(
+  persist(
+    (set, get) => ({
   // 1. Global State
   locale: savedLocale,
   searchCriteria: {
@@ -153,9 +156,22 @@ export const useProjectStore = create((set, get) => ({
       }
     },
   },
-
-
-}));
+    }),
+    {
+      name: 'pim_project_search_storage',
+      storage: createJSONStorage(() => sessionStorage),
+      partialize: (state) => ({
+        searchCriteria: state.searchCriteria,
+        isAdvancedFilterOpen: state.isAdvancedFilterOpen,
+        pagination: {
+          pageNumber: state.pagination.pageNumber,
+          pageSize: state.pagination.pageSize,
+        },
+        sortConfig: state.sortConfig,
+      }),
+    }
+  )
+);
 
 export const useProjects = () => useProjectStore((state) => state.projects);
 export const useSearchCriteria = () => useProjectStore((state) => state.searchCriteria);
