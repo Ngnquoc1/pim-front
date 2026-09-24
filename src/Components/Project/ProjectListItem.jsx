@@ -36,7 +36,7 @@ export const ProjectListItem = ({
         {project.name}
       </td>
 
-      {/* Status */}
+      {/* Status: Default Segoe UI, 14px, #666666 per us_2_guide.jpg */}
       <td className="text-left align-middle">
         {formatStatus(project.status)}
       </td>

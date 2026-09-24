@@ -21,6 +21,12 @@
     width: 100%;
 }
 
+/* Form Content Wrapper: optimal ergonomic width (980px) */
+.formContentWrapper {
+    width: 100%;
+    max-width: 980px;
+}
+
 /* Row Layout: 38px vertical spacing between rows per us_1_guide.jpg */
 .projectFormRow {
     display: flex;

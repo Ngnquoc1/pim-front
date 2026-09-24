@@ -106,7 +106,8 @@ function ProjectForm({ isEditMode, onCancel, onSubmit, serverError, projectData 
       </h2>
       <hr className={styles.projectFormDivider} />
 
-      {/* Global Error Banners with Dismiss ('x') Button */}
+      <div className={styles.formContentWrapper}>
+        {/* Global Error Banners with Dismiss ('x') Button */}
       <ErrorAlert
         show={hasMandatoryError && !dismissedErrors.mandatory}
         content="projectForm.mandatoryNotice"
@@ -344,6 +345,7 @@ function ProjectForm({ isEditMode, onCancel, onSubmit, serverError, projectData 
           </button>
         </div>
       </form>
+      </div>
     </div>
   );
 }
