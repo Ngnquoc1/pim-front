@@ -17,3 +17,13 @@
 .navbarCustom {
     padding: 0 !important;
 }
+
+.navigation a:hover .textSemiBold {
+    color: #1a6edb;
+}
+
+.navGroupHeader {
+    font-size: 14pt;
+    font-weight: 600;
+    color: #2f85fa;
+}

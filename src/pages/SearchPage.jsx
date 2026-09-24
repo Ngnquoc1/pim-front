@@ -2,10 +2,9 @@ import React, { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import Translate from "react-translate-component";
-import ProjectSearchBar from "../../Components/Project/ProjectSearchBar";
-import ProjectList from "../../Components/Project/ProjectList";
-import { useProjectStore, useProjectActions } from "../../store/useProjectStore";
-import styles from "../Style/SearchPage.module.css";
+import { ProjectSearchBar, ProjectList } from "../Components/Project/List";
+import { useProjectStore, useProjectActions } from "../store/useProjectStore";
+import styles from "./SearchPage.module.css";
 
 function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -82,7 +81,7 @@ function SearchPage() {
   return (
     <Container fluid className={styles.searchPageContainer}>
       <Row>
-        <Col>
+        <Col xl={12}>
           <h2 className={styles.pageTitle}>
             <Translate content="projectList.title" />
           </h2>

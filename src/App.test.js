@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import App from './App';
 
-jest.mock('../services/projectService', () => ({
+jest.mock('./services/projectService', () => ({
   searchProjects: jest.fn().mockResolvedValue([]),
   getProjects: jest.fn().mockResolvedValue([]),
   getProjectById: jest.fn().mockResolvedValue({}),
@@ -11,7 +11,7 @@ jest.mock('../services/projectService', () => ({
   deleteProjects: jest.fn().mockResolvedValue({}),
 }));
 
-jest.mock('../services/groupService', () => ({
+jest.mock('./services/groupService', () => ({
   getAllGroups: jest.fn().mockResolvedValue([]),
 }));
 

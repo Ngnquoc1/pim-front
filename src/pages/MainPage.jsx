@@ -6,6 +6,8 @@ import Sidebar from "./Sidebar";
 import ErrorScreen from "./ErrorScreen";
 import Project from "./Project";
 import SearchPage from "./SearchPage";
+import { ROUTES } from "../constants/routes";
+
 function MainPage() {
   return (
     <Router>
@@ -24,12 +26,12 @@ function MainPage() {
             </Col>
             <Col xl={8} lg={9} md={9} sm={12} xs={12}>
               <Routes>
-                <Route path="/" element={<SearchPage />} />
-                <Route path="/projects" element={<SearchPage />} />
-                <Route path="/create-project" element={<Project />} />
-                <Route path="/projects/new" element={<Project />} />
-                <Route path="/projects/edit/:id" element={<Project />} />
-                <Route path="/error" element={<ErrorScreen />} />
+                <Route path={ROUTES.HOME} element={<SearchPage />} />
+                <Route path={ROUTES.PROJECTS} element={<SearchPage />} />
+                <Route path={ROUTES.CREATE_PROJECT} element={<Project />} />
+                <Route path={ROUTES.PROJECTS_NEW} element={<Project />} />
+                <Route path={ROUTES.PROJECTS_EDIT} element={<Project />} />
+                <Route path={ROUTES.ERROR} element={<ErrorScreen />} />
                 <Route path="*" element={<ErrorScreen />} />
               </Routes>
             </Col>

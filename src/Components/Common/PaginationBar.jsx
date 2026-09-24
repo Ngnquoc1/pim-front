@@ -1,6 +1,6 @@
 import React from "react";
-import previousPageIcon from "../../Material/Images/previous_page.png";
-import nextPageIcon from "../../Material/Images/nextpage_icon.png";
+import previousPageIcon from "../../assets/images/previous_page.png";
+import nextPageIcon from "../../assets/images/nextpage_icon.png";
 import { usePagination, useProjectActions } from "../../store/useProjectStore";
 
 import styles from "./PaginationBar.module.css";

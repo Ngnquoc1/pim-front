@@ -2,15 +2,16 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import counterpart from 'counterpart';
 import projectService from '../services/projectService';
-import en from '../Material/lang/en';
-import fr from '../Material/lang/fr';
+import en from '../locales/en';
+import fr from '../locales/fr';
+import { STORAGE_KEYS } from '../constants/storage';
 
 // 1. Register translations globally
 counterpart.registerTranslations('en', en);
 counterpart.registerTranslations('fr', fr);
 
 // 2. Read saved locale from localStorage and synchronize counterpart immediately
-const savedLocale = localStorage.getItem('pim_locale') || 'en';
+const savedLocale = localStorage.getItem(STORAGE_KEYS.LOCALE) || 'en';
 counterpart.setLocale(savedLocale);
 
 export const useProjectStore = create(
@@ -49,7 +50,7 @@ export const useProjectStore = create(
   actions: {
     // 2.1 Synchronous Actions
     setLocale: (locale) => {
-      localStorage.setItem('pim_locale', locale);
+      localStorage.setItem(STORAGE_KEYS.LOCALE, locale);
       counterpart.setLocale(locale);
       set({ locale });
     },
@@ -158,7 +159,7 @@ export const useProjectStore = create(
   },
     }),
     {
-      name: 'pim_project_search_storage',
+      name: STORAGE_KEYS.PROJECT_SEARCH,
       storage: createJSONStorage(() => sessionStorage),
       partialize: (state) => ({
         searchCriteria: state.searchCriteria,

@@ -1,12 +1,9 @@
 import React from "react";
 import Translate from "react-translate-component";
 import { Row, Col, Nav, Navbar } from "react-bootstrap";
-import styles from "../Style/Navigation.module.css";
-import counterpart from "counterpart";
-import en from "../lang/en";
 import { Link } from "react-router-dom";
-
-counterpart.registerTranslations("en", en);
+import styles from "./Navigation.module.css";
+import { ROUTES } from "../constants/routes";
 
 function Sidebar() {
   return (
@@ -17,23 +14,23 @@ function Sidebar() {
         <Nav className={styles.navigation}>
           <Row>
             <Col xl={12}>
-              <Nav.Link as={Link} to="/">
+              <Nav.Link as={Link} to={ROUTES.HOME}>
                 <p className={`${styles.textSemiBold} ${styles.firstElement}`}>
                   <Translate content="navigation.title" />
                 </p>
               </Nav.Link>
-              <Nav.Link>
+              <Nav.Link as="div" style={{ cursor: "default" }}>
                 <p className={styles.textSemiBold}>
                   <Translate content="navigation.new" />
                 </p>
               </Nav.Link>
-              <Nav.Link as={Link} to="/create-project">
+              <Nav.Link as={Link} to={ROUTES.CREATE_PROJECT}>
                 <Translate content="navigation.project" />
               </Nav.Link>
-              <Nav.Link as={Link} to="/customer">
+              <Nav.Link as={Link} to={ROUTES.CUSTOMER}>
                 <Translate content="navigation.customer" />
               </Nav.Link>
-              <Nav.Link as={Link} to="/supplier">
+              <Nav.Link as={Link} to={ROUTES.SUPPLIER}>
                 <Translate content="navigation.supplier" />
               </Nav.Link>
             </Col>

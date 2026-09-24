@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import ProjectForm from "../../Components/Project/ProjectForm";
-import projectService from "../../services/projectService";
+import ProjectForm from "../Components/Project/Form";
+import projectService from "../services/projectService";
+import { ROUTES } from "../constants/routes";
 
 export default function Project() {
   const { id } = useParams();
@@ -33,7 +34,7 @@ export default function Project() {
     if (window.history.state && window.history.state.idx > 0) {
       navigate(-1);
     } else {
-      navigate("/projects");
+      navigate(ROUTES.PROJECTS);
     }
   };
 
@@ -51,7 +52,7 @@ export default function Project() {
       startDate: formData.startDate,
       endDate: formData.endDate || null,
       version: formData.version,
-      memberVisas: formData.members
+      memberVisas: formData.members,
     };
 
     try {
@@ -62,7 +63,7 @@ export default function Project() {
       }
 
       // Navigate back to project list on success
-      navigate("/projects");
+      navigate(ROUTES.PROJECTS);
     } catch (error) {
       console.error("Save project failed: ", error);
       if (error.response && error.response.status < 500) {

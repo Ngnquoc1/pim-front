@@ -1,5 +1,6 @@
 import axios from "axios";
 import counterpart from "counterpart";
+import { ROUTES } from "../constants/routes";
 
 // Handle CJS/ESM interop in Jest with Axios 1.x
 const getAxiosInstance = () => {
@@ -42,7 +43,7 @@ if (api.interceptors) {
         (error) => {
             // Catch unexpected technical errors: 500+ or network error
             if (!error.response || error.response.status >= 500) {
-                window.location.href = "/error";
+                window.location.href = ROUTES.ERROR;
             }
             return Promise.reject(error);
         }

@@ -1,9 +1,9 @@
 import React from "react";
 import Translate from "react-translate-component";
 import { Container, Row, Col } from "react-bootstrap";
-import styles from "../Style/Header.module.css";
-import logo from "../Images/logo_elca.png";
-import { useLocale, useProjectActions } from "../../store/useProjectStore";
+import styles from "./Header.module.css";
+import logo from "../assets/images/logo_elca.png";
+import { useLocale, useProjectActions } from "../store/useProjectStore";
 
 function Header() {
   const currentLocale = useLocale();
@@ -72,4 +72,3 @@ function Header() {
 }
 
 export default Header;
-
