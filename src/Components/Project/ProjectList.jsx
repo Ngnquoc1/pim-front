@@ -1,10 +1,14 @@
 import React, { useState, useMemo } from "react";
-import { Table, Spinner } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import Translate from "react-translate-component";
 import counterpart from "counterpart";
 
 import TrashIcon from "../Common/TrashIcon";
 import PaginationBar from "../Common/PaginationBar";
+import TableSkeleton from "../Common/TableSkeleton";
+import DeleteConfirmModal from "../Common/DeleteConfirmModal";
+import ToastNotification from "../Common/ToastNotification";
+import EmptyState from "../Common/EmptyState";
 import ProjectListItem from "./ProjectListItem";
 import { useProjects, useProjectLoading, useProjectActions, useLocale, useSortConfig } from "../../store/useProjectStore";
 
@@ -21,6 +25,23 @@ export const ProjectList = () => {
 
   // Selected project IDs state
   const [selectedIds, setSelectedIds] = useState([]);
+
+  // Custom Delete Modal State
+  const [deleteModal, setDeleteModal] = useState({
+    show: false,
+    ids: [],
+    isWarning: false,
+  });
+
+  // Success Toast notification state
+  const [toastMessage, setToastMessage] = useState("");
+
+  const showToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => {
+      setToastMessage("");
+    }, 3500);
+  };
 
   const sortedProjects = useMemo(() => {
     return sortProjects(projects, sortConfig);
@@ -40,7 +61,7 @@ export const ProjectList = () => {
         ↕
       </span>
     );
-  }
+  };
 
   // Toggle single row selection
   const handleToggleSelected = (id) => {
@@ -59,8 +80,8 @@ export const ProjectList = () => {
     setSelectedIds(isAllSelected ? [] : projects.map((project) => project.id));
   };
 
-  // Unified delete handler (single delete and bulk delete)
-  const handleDeleteProjects = async (idsToDelete) => {
+  // Unified delete trigger (opens professional modal dialog)
+  const handleDeleteProjects = (idsToDelete) => {
     if (!idsToDelete || idsToDelete.length === 0) return;
 
     // Filter projects matching the target IDs to delete
@@ -69,37 +90,59 @@ export const ProjectList = () => {
     // Business rule: Only projects with status 'NEW' can be deleted
     const hasNonNewProject = targetProjects.some((p) => p.status !== "NEW");
     if (hasNonNewProject) {
-      alert(counterpart.translate("projectList.warningDeleteNewOnly"));
+      setDeleteModal({
+        show: true,
+        ids: idsToDelete,
+        isWarning: true,
+      });
       return;
     }
 
-    // Confirmation dialog before deletion
-    const confirmed = window.confirm(counterpart.translate("projectList.confirmDelete"));
-    if (!confirmed) return;
+    setDeleteModal({
+      show: true,
+      ids: idsToDelete,
+      isWarning: false,
+    });
+  };
+
+  // Execute deletion confirmed in Modal
+  const handleConfirmDelete = async () => {
+    const idsToDelete = deleteModal.ids;
+    setDeleteModal({ show: false, ids: [], isWarning: false });
 
     try {
       await deleteProjects(idsToDelete);
-      // Remove deleted IDs from selected IDs
       setSelectedIds((prev) => prev.filter((id) => !idsToDelete.includes(id)));
+      showToast(counterpart.translate("projectList.deleteSuccess"));
     } catch (error) {
       console.error("Delete failed: ", error);
-      // Handle business errors (4xx) with user alert (5xx errors are handled globally by api.js)
       if (error.response && error.response.status < 500) {
         alert(error.response.data?.message || "Delete failed");
       }
     }
   };
 
+  const handleCloseDeleteModal = () => {
+    setDeleteModal({ show: false, ids: [], isWarning: false });
+  };
+
+  const tableHeaders = [
+    { className: "text-center align-middle", style: { width: "40px" }, label: <input type="checkbox" disabled style={{ width: "15px", height: "15px" }} /> },
+    { className: "text-right align-middle", style: { width: "100px" }, label: <Translate content="projectList.colNumber" /> },
+    { className: "text-left align-middle", label: <Translate content="projectList.colName" /> },
+    { className: "text-left align-middle", style: { width: "140px" }, label: <Translate content="projectList.colStatus" /> },
+    { className: "text-left align-middle", style: { width: "220px" }, label: <Translate content="projectList.colCustomer" /> },
+    { className: "text-center align-middle", style: { width: "130px" }, label: <Translate content="projectList.colStartDate" /> },
+    { className: "text-center align-middle", style: { width: "95px" }, label: <Translate content="projectList.colDelete" /> },
+  ];
+
   return (
     <div className="project-list-table-container">
-      {/* Loading spinner */}
-      {loading && (
-        <div className="text-center py-4">
-          <Spinner animation="border" variant="primary" role="status">
-            <span className="sr-only">Loading...</span>
-          </Spinner>
-        </div>
-      )}
+      {/* Toast Notification */}
+      <ToastNotification message={toastMessage} />
+
+      {/* Skeleton Shimmer Loading Table */}
+      {loading && <TableSkeleton rows={5} headers={tableHeaders} />}
 
       {/* Project grid table */}
       {!loading && (
@@ -197,8 +240,11 @@ export const ProjectList = () => {
             <tbody>
               {sortedProjects.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="text-center py-4 text-muted">
-                    <Translate content="projectList.noDataFound" />
+                  <td colSpan="7" className="text-center">
+                    <EmptyState
+                      title={<Translate content="projectList.noDataFound" />}
+                      subtitle={<Translate content="projectList.emptyStateHint" />}
+                    />
                   </td>
                 </tr>
               ) : (
@@ -238,6 +284,18 @@ export const ProjectList = () => {
           <PaginationBar />
         </>
       )}
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmModal
+        show={deleteModal.show}
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleConfirmDelete}
+        isWarning={deleteModal.isWarning}
+        selectedItems={deleteModal.ids}
+        itemLabels={projects
+          .filter((p) => deleteModal.ids.includes(p.id))
+          .map((p) => `#${p.projectNumber}`)}
+      />
     </div>
   );
 };

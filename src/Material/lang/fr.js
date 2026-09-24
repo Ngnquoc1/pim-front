@@ -44,6 +44,12 @@ export default {
         endDateRange: 'Date de fin',
         invalidStartDateRange: 'Date de début : La date « Du » doit être antérieure ou égale à la date « Au »',
         invalidEndDateRange: 'Date de fin : La date « Du » doit être antérieure ou égale à la date « Au »',
+        emptyStateHint: 'Essayez d\'ajuster vos critères de recherche ou de filtre pour voir les projets.',
+        deleteModalTitle: 'Confirmer la suppression du projet',
+        deleteModalWarningTitle: 'Action non autorisée',
+        deleteSuccess: 'Projet(s) supprimé(s) avec succès',
+        btnConfirmDelete: 'Supprimer',
+        btnClose: 'Fermer',
     },
     projectForm: {
         newTitle: 'Nouveau Projet',

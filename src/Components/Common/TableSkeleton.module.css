@@ -1,0 +1,41 @@
+.skeletonTable {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #666666;
+    border: 1px solid #d8d8d8;
+}
+
+.skeletonTable thead th {
+    height: 32px;
+    padding: 4px 8px !important;
+    font-weight: 600;
+    color: #666666;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #d8d8d8 !important;
+    font-size: 14px;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.skeletonLine {
+    display: inline-block;
+    height: 14px;
+    background: linear-gradient(90deg, #f0f2f5 25%, #e4e7ec 37%, #f0f2f5 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.4s ease infinite;
+    border-radius: 4px;
+}
+
+.skeletonBox {
+    display: inline-block;
+    background: linear-gradient(90deg, #f0f2f5 25%, #e4e7ec 37%, #f0f2f5 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.4s ease infinite;
+    border-radius: 4px;
+}

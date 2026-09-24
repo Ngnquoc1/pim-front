@@ -44,6 +44,12 @@ export default {
         endDateRange: 'End Date',
         invalidStartDateRange: 'Start Date: "From" date must be earlier than or equal to "To" date',
         invalidEndDateRange: 'End Date: "From" date must be earlier than or equal to "To" date',
+        emptyStateHint: 'Try adjusting your search keywords or filter criteria to see projects.',
+        deleteModalTitle: 'Confirm Project Deletion',
+        deleteModalWarningTitle: 'Action Not Allowed',
+        deleteSuccess: 'Project(s) deleted successfully',
+        btnConfirmDelete: 'Delete',
+        btnClose: 'Close',
     },
     projectForm: {
         newTitle: 'New Project',
