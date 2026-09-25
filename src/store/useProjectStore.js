@@ -148,8 +148,9 @@ export const useProjectStore = create(
     deleteProjects: async (ids) => {
       set({ loading: true, error: null });
       try {
-        await projectService.deleteProjects(ids);
+        const result = await projectService.deleteProjects(ids);
         await get().actions.fetchProjects();
+        return result;
       } catch (err) {
         console.error('Failed to delete projects in store:', err);
         set({ error: err, loading: false });

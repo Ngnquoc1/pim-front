@@ -7,7 +7,7 @@ const getAxiosInstance = () => {
     if (typeof axios.create === "function") {
         return axios.create({
             baseURL: "",
-            timeout: 10000,
+            timeout: 0,
             headers: {
                 "Content-Type": "application/json",
             },
@@ -16,7 +16,7 @@ const getAxiosInstance = () => {
     if (axios.default && typeof axios.default.create === "function") {
         return axios.default.create({
             baseURL: "",
-            timeout: 10000,
+            timeout: 0,
             headers: {
                 "Content-Type": "application/json",
             },

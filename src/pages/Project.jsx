@@ -58,12 +58,15 @@ export default function Project() {
     try {
       if (isEditMode) {
         await projectService.updateProject(id, payload);
+        navigate(ROUTES.PROJECTS, {
+          state: { toastKey: "projectForm.updateSuccess" },
+        });
       } else {
         await projectService.createProject(payload);
+        navigate(ROUTES.PROJECTS, {
+          state: { toastKey: "projectForm.createSuccess" },
+        });
       }
-
-      // Navigate back to project list on success
-      navigate(ROUTES.PROJECTS);
     } catch (error) {
       console.error("Save project failed: ", error);
       if (error.response && error.response.status < 500) {

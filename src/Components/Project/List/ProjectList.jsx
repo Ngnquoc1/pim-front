@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Table } from "react-bootstrap";
+import { useLocation, useNavigate } from "react-router-dom";
 import Translate from "react-translate-component";
 import counterpart from "counterpart";
 
@@ -42,6 +43,20 @@ export const ProjectList = () => {
       setToastMessage("");
     }, 3500);
   };
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Listen for flash toast messages from navigation (e.g. Project created or updated)
+  useEffect(() => {
+    if (location.state?.toastKey) {
+      showToast(counterpart.translate(location.state.toastKey));
+      navigate(location.pathname, { replace: true, state: {} });
+    } else if (location.state?.toastMessage) {
+      showToast(location.state.toastMessage);
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location, navigate]);
 
   const sortedProjects = useMemo(() => {
     return sortProjects(projects, sortConfig);
@@ -111,9 +126,18 @@ export const ProjectList = () => {
     setDeleteModal({ show: false, ids: [], isWarning: false });
 
     try {
-      await deleteProjects(idsToDelete);
+      const result = await deleteProjects(idsToDelete);
       setSelectedIds((prev) => prev.filter((id) => !idsToDelete.includes(id)));
-      showToast(counterpart.translate("projectList.deleteSuccess"));
+
+      // Transparency handling: check if any requested IDs were not found / already deleted
+      if (result && result.notFoundIds && result.notFoundIds.length > 0) {
+        const notFoundText = counterpart.translate("projectList.deletePartialSuccess", {
+          ids: result.notFoundIds.join(", "),
+        });
+        showToast(notFoundText || result.message);
+      } else {
+        showToast(counterpart.translate("projectList.deleteSuccess"));
+      }
     } catch (error) {
       console.error("Delete failed: ", error);
       if (error.response && error.response.status < 500) {
