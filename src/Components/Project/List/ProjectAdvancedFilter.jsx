@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Row, Col, Form } from "react-bootstrap";
 import Translate from "react-translate-component";
 import counterpart from "counterpart";
-import groupService from "../../../services/groupService";
+import { useGroupsQuery } from "../../../hooks/queries";
 import MemberAutocomplete from "../MemberAutocomplete";
 import styles from "./ProjectAdvancedFilter.module.css";
 
@@ -13,25 +13,8 @@ function ProjectAdvancedFilter({
     onChange,
     dateError,
 }) {
-    const [groups, setGroups] = useState([]);
-
-    // Load groups for Project Leader dropdown
-    useEffect(() => {
-        let isMounted = true;
-        groupService
-            .getAllGroups()
-            .then((res) => {
-                if (isMounted) {
-                    setGroups(res.data || res || []);
-                }
-            })
-            .catch((err) => {
-                console.error("Failed to load groups: ", err);
-            });
-        return () => {
-            isMounted = false;
-        };
-    }, []);
+    // Retrieve cached groups via TanStack Query
+    const { data: groups = [] } = useGroupsQuery();
 
     if (!isOpen) {
         return null;

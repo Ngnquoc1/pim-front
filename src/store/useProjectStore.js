@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import counterpart from 'counterpart';
-import projectService from '../services/projectService';
 import en from '../locales/en';
 import fr from '../locales/fr';
 import { STORAGE_KEYS } from '../constants/storage';
@@ -14,150 +13,127 @@ counterpart.registerTranslations('fr', fr);
 const savedLocale = localStorage.getItem(STORAGE_KEYS.LOCALE) || 'en';
 counterpart.setLocale(savedLocale);
 
+/**
+ * Zustand Store for Client-Side State Management.
+ * Manages UI interactions, form search criteria, active locale, pagination page/size, and column sorting.
+ * Server-side data (projects list, mutations, groups, employees) is managed by TanStack Query.
+ */
 export const useProjectStore = create(
   persist(
     (set, get) => ({
-  // 1. Global State
-  locale: savedLocale,
-  searchCriteria: {
-    keyword: '',
-    status: 'ALL',
-    groupLeaderVisa: '',
-    memberVisas: [],
-    startDateFrom: '',
-    startDateTo: '',
-    endDateFrom: '',
-    endDateTo: '',
-  },
-  isAdvancedFilterOpen: false,
-  pagination: {
-    pageNumber: 0,
-    pageSize: 10,
-    totalElements: 0,
-    totalPages: 0,
-    first: true,
-    last: true,
-  },
-  sortConfig: {
-    field: 'projectNumber',
-    direction: 'asc',
-  },
-  projects: [],
-  loading: false,
-  error: null,
+      // 1. Client-Side State
+      locale: savedLocale,
+      searchCriteria: {
+        keyword: '',
+        status: 'ALL',
+        groupLeaderVisa: '',
+        memberVisas: [],
+        startDateFrom: '',
+        startDateTo: '',
+        endDateFrom: '',
+        endDateTo: '',
+      },
+      isAdvancedFilterOpen: false,
+      pagination: {
+        pageNumber: 0,
+        pageSize: 10,
+      },
+      sortConfig: {
+        field: 'projectNumber',
+        direction: 'asc',
+      },
 
-  // 2. Actions
-  actions: {
-    // 2.1 Synchronous Actions
-    setLocale: (locale) => {
-      localStorage.setItem(STORAGE_KEYS.LOCALE, locale);
-      counterpart.setLocale(locale);
-      set({ locale });
-    },
-
-    setSearchCriteria: (criteria) =>
-      set((state) => ({
-        searchCriteria: {
-          ...state.searchCriteria,
-          ...criteria,
+      // 2. Client-Side Actions
+      actions: {
+        setLocale: (locale) => {
+          localStorage.setItem(STORAGE_KEYS.LOCALE, locale);
+          counterpart.setLocale(locale);
+          set({ locale });
         },
-      })),
 
-    setIsAdvancedFilterOpen: (isAdvancedFilterOpen) => set({ isAdvancedFilterOpen }),
+        setSearchCriteria: (criteria) =>
+          set((state) => ({
+            searchCriteria: {
+              ...state.searchCriteria,
+              ...criteria,
+            },
+            pagination: {
+              ...state.pagination,
+              pageNumber: 0,
+            },
+          })),
 
-    resetSearchCriteria: () =>
-      set({
-        searchCriteria: {
-          keyword: '',
-          status: 'ALL',
-          groupLeaderVisa: '',
-          memberVisas: [],
-          startDateFrom: '',
-          startDateTo: '',
-          endDateFrom: '',
-          endDateTo: '',
+        setIsAdvancedFilterOpen: (isAdvancedFilterOpen) => set({ isAdvancedFilterOpen }),
+
+        resetSearchCriteria: () =>
+          set((state) => ({
+            searchCriteria: {
+              keyword: '',
+              status: 'ALL',
+              groupLeaderVisa: '',
+              memberVisas: [],
+              startDateFrom: '',
+              startDateTo: '',
+              endDateFrom: '',
+              endDateTo: '',
+            },
+            pagination: {
+              ...state.pagination,
+              pageNumber: 0,
+            },
+          })),
+
+        setSortConfig: (field) => {
+          const state = get();
+          const direction =
+            state.sortConfig.field === field && state.sortConfig.direction === 'asc'
+              ? 'desc'
+              : 'asc';
+          set({
+            sortConfig: { field, direction },
+            pagination: { ...state.pagination, pageNumber: 0 },
+          });
         },
-      }),
 
-    setSortConfig: (field) => {
-      const state = get();
-      const direction =
-        state.sortConfig.field === field && state.sortConfig.direction === 'asc'
-          ? 'desc'
-          : 'asc';
-      const newSortConfig = { field, direction };
-      set({ sortConfig: newSortConfig });
-      get().actions.fetchProjects({ page: 0, sort: `${field},${direction}` });
-    },
-    resetSortConfig: () =>
-      set({
-        sortConfig: {
-          field: 'projectNumber',
-          direction: 'asc',
+        resetSortConfig: () =>
+          set({
+            sortConfig: {
+              field: 'projectNumber',
+              direction: 'asc',
+            },
+          }),
+
+        setPage: (pageNumber) =>
+          set((state) => ({
+            pagination: {
+              ...state.pagination,
+              pageNumber,
+            },
+          })),
+
+        setPageSize: (pageSize) =>
+          set((state) => ({
+            pagination: {
+              ...state.pagination,
+              pageSize,
+              pageNumber: 0,
+            },
+          })),
+
+        // Backward compatibility bridge for SearchPage and legacy callers
+        fetchProjects: async (customParams = {}) => {
+          const state = get();
+          if (customParams.searchCriteria) {
+            state.actions.setSearchCriteria(customParams.searchCriteria);
+          }
+          if (customParams.page !== undefined) {
+            state.actions.setPage(customParams.page);
+          }
+          if (customParams.size !== undefined) {
+            state.actions.setPageSize(customParams.size);
+          }
         },
-      }),
-
-    setPage: (pageNumber) => {
-      get().actions.fetchProjects({ page: pageNumber });
-    },
-
-    setPageSize: (pageSize) => {
-      get().actions.fetchProjects({ page: 0, size: pageSize });
-    },
-
-    setProjects: (projects) => set({ projects: projects || [] }),
-
-    // 2.2 Asynchronous Actions
-    fetchProjects: async (customParams = {}) => {
-      set({ loading: true, error: null });
-      try {
-        const state = get();
-        const criteria = customParams.searchCriteria || state.searchCriteria;
-        const page = customParams.page !== undefined ? customParams.page : state.pagination.pageNumber;
-        const size = customParams.size !== undefined ? customParams.size : state.pagination.pageSize;
-        const sort = customParams.sort || `${state.sortConfig.field},${state.sortConfig.direction}`;
-
-        const data = await projectService.searchProjects(
-          criteria,
-          page,
-          size,
-          sort
-        );
-
-        set({
-          projects: data.content || [],
-          pagination: {
-            pageNumber: data.pageNumber,
-            pageSize: data.pageSize,
-            totalElements: data.totalElements,
-            totalPages: data.totalPages,
-            first: data.first,
-            last: data.last,
-          },
-          loading: false
-        });
-        return data;
-      } catch (err) {
-        console.error('Failed to fetch projects in store:', err);
-        set({ error: err, loading: false });
-        throw err;
-      }
-    },
-
-    // 2.3 Asynchronous Actions
-    deleteProjects: async (ids) => {
-      set({ loading: true, error: null });
-      try {
-        const result = await projectService.deleteProjects(ids);
-        await get().actions.fetchProjects();
-        return result;
-      } catch (err) {
-        console.error('Failed to delete projects in store:', err);
-        set({ error: err, loading: false });
-        throw err;
-      }
-    },
-  },
+      },
     }),
     {
       name: STORAGE_KEYS.PROJECT_SEARCH,
@@ -175,10 +151,8 @@ export const useProjectStore = create(
   )
 );
 
-export const useProjects = () => useProjectStore((state) => state.projects);
+// Export convenient selector hooks for components
 export const useSearchCriteria = () => useProjectStore((state) => state.searchCriteria);
-export const useProjectLoading = () => useProjectStore((state) => state.loading);
-export const useProjectError = () => useProjectStore((state) => state.error);
 export const useLocale = () => useProjectStore((state) => state.locale);
 export const useSortConfig = () => useProjectStore((state) => state.sortConfig);
 export const usePagination = () => useProjectStore((state) => state.pagination);

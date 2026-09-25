@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ProjectForm from "../Components/Project/Form";
-import projectService from "../services/projectService";
+import {
+  useProjectDetailQuery,
+  useCreateProjectMutation,
+  useUpdateProjectMutation,
+} from "../hooks/queries";
 import { ROUTES } from "../constants/routes";
 
 export default function Project() {
@@ -9,25 +13,15 @@ export default function Project() {
   const isEditMode = Boolean(id);
   const navigate = useNavigate();
 
-  // State to store project details when editing
-  const [projectData, setProjectData] = useState(null);
+  // Fetch project details when in edit mode via TanStack Query
+  const { data: projectData } = useProjectDetailQuery(id);
+
+  // Mutations for creating and updating projects with cache invalidation
+  const createProjectMutation = useCreateProjectMutation();
+  const updateProjectMutation = useUpdateProjectMutation();
 
   // State to store server-side error message
   const [serverError, setServerError] = useState("");
-
-  // Fetch project details if in Edit mode
-  useEffect(() => {
-    if (isEditMode && id) {
-      projectService
-        .getProjectById(id)
-        .then((response) => {
-          setProjectData(response.data || response);
-        })
-        .catch((error) => {
-          console.error("Failed to fetch project: ", error);
-        });
-    }
-  }, [isEditMode, id]);
 
   // Navigate back to project list screen (preserving search criteria and URL)
   const handleCancel = () => {
@@ -57,12 +51,12 @@ export default function Project() {
 
     try {
       if (isEditMode) {
-        await projectService.updateProject(id, payload);
+        await updateProjectMutation.mutateAsync({ id, projectData: payload });
         navigate(ROUTES.PROJECTS, {
           state: { toastKey: "projectForm.updateSuccess" },
         });
       } else {
-        await projectService.createProject(payload);
+        await createProjectMutation.mutateAsync(payload);
         navigate(ROUTES.PROJECTS, {
           state: { toastKey: "projectForm.createSuccess" },
         });

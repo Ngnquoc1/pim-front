@@ -11,7 +11,16 @@ import DeleteConfirmModal from "../../Common/DeleteConfirmModal";
 import ToastNotification from "../../Common/ToastNotification";
 import EmptyState from "../../Common/EmptyState";
 import ProjectListItem from "./ProjectListItem";
-import { useProjects, useProjectLoading, useProjectActions, useLocale, useSortConfig } from "../../../store/useProjectStore";
+import {
+  useProjectActions,
+  useLocale,
+  useSortConfig,
+  usePagination,
+} from "../../../store/useProjectStore";
+import {
+  useProjectsQuery,
+  useDeleteProjectsMutation,
+} from "../../../hooks/queries";
 
 import { sortProjects } from "../../../utils/sortUtils";
 
@@ -19,10 +28,17 @@ import styles from "./ProjectList.module.css";
 
 export const ProjectList = () => {
   useLocale(); // Trigger re-render when language changes
-  const projects = useProjects();
-  const loading = useProjectLoading();
   const sortConfig = useSortConfig();
-  const { deleteProjects, setSortConfig } = useProjectActions();
+  const pagination = usePagination();
+  const { setSortConfig, setPage } = useProjectActions();
+
+  // 1. Server-side State via TanStack Query
+  const { data, isLoading } = useProjectsQuery();
+  const deleteMutation = useDeleteProjectsMutation();
+
+  const projects = data?.content || [];
+  const totalPages = data?.totalPages || 0;
+  const loading = isLoading;
 
   // Selected project IDs state
   const [selectedIds, setSelectedIds] = useState([]);
@@ -126,7 +142,7 @@ export const ProjectList = () => {
     setDeleteModal({ show: false, ids: [], isWarning: false });
 
     try {
-      const result = await deleteProjects(idsToDelete);
+      const result = await deleteMutation.mutateAsync(idsToDelete);
       setSelectedIds((prev) => prev.filter((id) => !idsToDelete.includes(id)));
 
       // Transparency handling: check if any requested IDs were not found / already deleted
@@ -305,7 +321,11 @@ export const ProjectList = () => {
             </div>
           )}
 
-          <PaginationBar />
+          <PaginationBar
+            totalPages={totalPages}
+            pageNumber={pagination.pageNumber}
+            onPageChange={setPage}
+          />
         </>
       )}
 

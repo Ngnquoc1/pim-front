@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Translate from "react-translate-component";
 import counterpart from "counterpart";
-import groupService from "../../../services/groupService";
+import { useGroupsQuery } from "../../../hooks/queries";
 import MemberAutocomplete from "../MemberAutocomplete";
 import ErrorAlert from "../../Common/ErrorAlert";
 import { useLocale } from "../../../store/useProjectStore";
@@ -10,7 +10,7 @@ import styles from "./ProjectForm.module.css";
 
 function ProjectForm({ isEditMode, onCancel, onSubmit, serverError, projectData }) {
   useLocale(); // Trigger re-render when language changes
-  const [groups, setGroups] = useState([]);
+  const { data: groups = [] } = useGroupsQuery();
   const [dismissedErrors, setDismissedErrors] = useState({});
 
   useEffect(() => {
@@ -18,18 +18,6 @@ function ProjectForm({ isEditMode, onCancel, onSubmit, serverError, projectData 
       setDismissedErrors((prev) => ({ ...prev, server: false }));
     }
   }, [serverError]);
-
-  useEffect(() => {
-    // Fetch groups for Group dropdown
-    groupService
-      .getAllGroups()
-      .then((response) => {
-        setGroups(response.data || response || []);
-      })
-      .catch((error) => {
-        console.error("Failed to load groups: ", error);
-      });
-  }, []);
 
   // Initialize React Hook Form
   const {

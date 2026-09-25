@@ -43,7 +43,7 @@ function SearchPage() {
         searchCriteria: criteriaFromUrl,
       }).catch(() => {});
     } else {
-      // Khi URL không có tham số (/projects hoặc /), kiểm tra xem Store có tiêu chí đã lưu không:
+      // When the URL has no query parameters (/projects or /), check if Store contains saved criteria:
       const state = useProjectStore.getState();
       const currentCriteria = state.searchCriteria;
       const hasStoredCriteria = Boolean(
