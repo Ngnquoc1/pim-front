@@ -40,12 +40,19 @@ const TagAutocomplete = forwardRef(function TagAutocomplete(
 
   useImperativeHandle(ref, () => inputRef.current);
 
-  // Close dropdown on click outside
+  // Close dropdown on click outside & clear non-matching search term if unfocused
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         setShowDropdown(false);
         setIsFocused(false);
+        if (!isSearching && searchTerm.length > 0 && (searchTerm.trim().length === 0 || suggestions.length === 0)) {
+          if (onClearSearch) {
+            onClearSearch();
+          } else if (onSearchTermChange) {
+            onSearchTermChange("");
+          }
+        }
       }
     };
 
@@ -53,17 +60,44 @@ const TagAutocomplete = forwardRef(function TagAutocomplete(
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [isSearching, searchTerm, suggestions.length, onClearSearch, onSearchTermChange]);
 
-  // Show dropdown when suggestions or loading state changes
+  // Handle input blur (unfocus via Tab or clicking outside)
+  const handleBlur = (e) => {
+    if (wrapperRef.current && wrapperRef.current.contains(e.relatedTarget)) {
+      return;
+    }
+    setIsFocused(false);
+    setShowDropdown(false);
+    if (!isSearching && searchTerm.length > 0 && (searchTerm.trim().length === 0 || suggestions.length === 0)) {
+      if (onClearSearch) {
+        onClearSearch();
+      } else if (onSearchTermChange) {
+        onSearchTermChange("");
+      }
+    }
+  };
+
+  // If a search was still in-flight when user unfocused, clear non-matching value once search finishes
   useEffect(() => {
-    if (searchTerm.trim().length > 0) {
+    if (!isFocused && !isSearching && searchTerm.length > 0 && (searchTerm.trim().length === 0 || suggestions.length === 0)) {
+      if (onClearSearch) {
+        onClearSearch();
+      } else if (onSearchTermChange) {
+        onSearchTermChange("");
+      }
+    }
+  }, [isFocused, isSearching, suggestions.length, searchTerm, onClearSearch, onSearchTermChange]);
+
+  // Show dropdown when focused and search term has text
+  useEffect(() => {
+    if (isFocused && searchTerm.trim().length > 0) {
       setShowDropdown(true);
       setHighlightedIndex(-1);
     } else {
       setShowDropdown(false);
     }
-  }, [searchTerm, suggestions]);
+  }, [isFocused, searchTerm, suggestions]);
 
   // Select item from suggestions list
   const handleSelectItem = (item) => {
@@ -99,11 +133,11 @@ const TagAutocomplete = forwardRef(function TagAutocomplete(
         return;
       }
       if (e.key === "Enter") {
+        e.preventDefault();
         if (highlightedIndex >= 0 && highlightedIndex < suggestions.length) {
-          e.preventDefault();
           handleSelectItem(suggestions[highlightedIndex]);
-          return;
         }
+        return;
       }
     }
 
@@ -194,7 +228,7 @@ const TagAutocomplete = forwardRef(function TagAutocomplete(
             onChange={(e) => onSearchTermChange && onSearchTermChange(e.target.value)}
             onKeyDown={handleKeyDown}
             onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
+            onBlur={handleBlur}
           />
         )}
       </div>
