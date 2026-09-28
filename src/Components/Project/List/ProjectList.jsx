@@ -16,11 +16,13 @@ import {
   useLocale,
   useSortConfig,
   usePagination,
+  useSearchCriteria,
 } from "../../../store/useProjectStore";
 import {
   useProjectsQuery,
   useDeleteProjectsMutation,
 } from "../../../hooks/queries";
+import { useProjectSelection } from "../../../hooks/useProjectSelection";
 
 import { sortProjects } from "../../../utils/sortUtils";
 
@@ -40,8 +42,26 @@ export const ProjectList = () => {
   const totalPages = data?.totalPages || 0;
   const loading = isLoading;
 
-  // Selected project IDs state
-  const [selectedIds, setSelectedIds] = useState([]);
+  const searchCriteria = useSearchCriteria();
+
+  // Persistent Cross-Page Selection with Page-Scoped Select All
+  const {
+    selectedIds,
+    selectedCount,
+    selectedProjectsMap,
+    isSelected,
+    isAllSelected,
+    isSomeSelected,
+    toggleSelect,
+    toggleSelectAll,
+    removeSelectedIds,
+    clearSelection,
+  } = useProjectSelection(projects);
+
+  // Automatically reset selections when search criteria/filters change
+  useEffect(() => {
+    clearSelection();
+  }, [searchCriteria, clearSelection]);
 
   // Custom Delete Modal State
   const [deleteModal, setDeleteModal] = useState({
@@ -94,29 +114,14 @@ export const ProjectList = () => {
     );
   };
 
-  // Toggle single row selection
-  const handleToggleSelected = (id) => {
-    setSelectedIds((prevSelectedIds) =>
-      prevSelectedIds.includes(id)
-        ? prevSelectedIds.filter((selectedId) => selectedId !== id)
-        : [...prevSelectedIds, id]
-    );
-  };
-
-  // Check if all projects are currently selected
-  const isAllSelected = projects.length > 0 && selectedIds.length === projects.length;
-
-  // Toggle select / deselect all rows
-  const handleToggleAllSelected = () => {
-    setSelectedIds(isAllSelected ? [] : projects.map((project) => project.id));
-  };
-
   // Unified delete trigger (opens professional modal dialog)
   const handleDeleteProjects = (idsToDelete) => {
     if (!idsToDelete || idsToDelete.length === 0) return;
 
-    // Filter projects matching the target IDs to delete
-    const targetProjects = projects.filter((project) => idsToDelete.includes(project.id));
+    // Filter projects matching target IDs from cross-page selected map or current projects
+    const targetProjects = idsToDelete
+      .map((id) => selectedProjectsMap[id] || projects.find((p) => p.id === id))
+      .filter(Boolean);
 
     // Business rule: Only projects with status 'NEW' can be deleted
     const hasNonNewProject = targetProjects.some((p) => p.status !== "NEW");
@@ -143,7 +148,7 @@ export const ProjectList = () => {
 
     try {
       const result = await deleteMutation.mutateAsync(idsToDelete);
-      setSelectedIds((prev) => prev.filter((id) => !idsToDelete.includes(id)));
+      removeSelectedIds(idsToDelete);
 
       // Transparency handling: check if any requested IDs were not found / already deleted
       if (result && result.notFoundIds && result.notFoundIds.length > 0) {
@@ -195,7 +200,10 @@ export const ProjectList = () => {
                   <input
                     type="checkbox"
                     checked={isAllSelected}
-                    onChange={handleToggleAllSelected}
+                    ref={(input) => {
+                      if (input) input.indeterminate = isSomeSelected;
+                    }}
+                    onChange={toggleSelectAll}
                     style={{ width: "15px", height: "15px", cursor: "pointer" }}
                   />
                 </th>
@@ -292,8 +300,8 @@ export const ProjectList = () => {
                   <ProjectListItem
                     key={project.id}
                     project={project}
-                    isSelected={selectedIds.includes(project.id)}
-                    onToggleSelected={handleToggleSelected}
+                    isSelected={isSelected(project.id)}
+                    onToggleSelected={toggleSelect}
                     onDeleteProject={handleDeleteProjects}
                   />
                 ))
@@ -302,10 +310,10 @@ export const ProjectList = () => {
           </Table>
 
           {/* Bulk delete banner directly under table per image7.png */}
-          {selectedIds.length > 0 && (
+          {selectedCount > 0 && (
             <div className={styles.bulkDeleteBanner}>
               <span className={styles.selectedCount}>
-                {selectedIds.length} <Translate content="projectList.itemsSelected" />
+                {selectedCount} <Translate content="projectList.itemsSelected" />
               </span>
 
               <button
