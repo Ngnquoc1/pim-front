@@ -6,7 +6,7 @@ import { ROUTES } from "../constants/routes";
 const getAxiosInstance = () => {
     if (typeof axios.create === "function") {
         return axios.create({
-            baseURL: "",
+            baseURL: process.env.REACT_APP_API_BASE_URL || "",
             timeout: 0,
             headers: {
                 "Content-Type": "application/json",
@@ -15,7 +15,7 @@ const getAxiosInstance = () => {
     }
     if (axios.default && typeof axios.default.create === "function") {
         return axios.default.create({
-            baseURL: "",
+            baseURL: process.env.REACT_APP_API_BASE_URL || "",
             timeout: 0,
             headers: {
                 "Content-Type": "application/json",
