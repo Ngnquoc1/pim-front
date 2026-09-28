@@ -1,14 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 
-/**
- * Custom Hook for generic debounced asynchronous search.
- * Handles 300ms debounce, AbortController request cancelation,
- * loading state, and unmount cleanup.
- *
- * @param {Function} searchFn - Async function (query, abortSignal) => Promise
- * @param {number} delay - Debounce delay in milliseconds (default: 300ms)
- * @returns {Object} { searchTerm, setSearchTerm, results, setResults, isSearching, clearSearch }
- */
 export function useDebouncedSearch(searchFn, delay = 300) {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);

@@ -1,16 +1,16 @@
 import api from "./api";
 
 const projectService = {
-    searchProjects: async (criteriaOrKeyword, statusOrPage = 0, pageOrSize = 10, sizeOrSort = 'projectNumber,asc', legacySort) => {
+    searchProjects: async (criteriaOrKeyword, statusOrPage = 0, pageOrSize = 15, sizeOrSort = 'projectNumber,asc', legacySort) => {
         let criteria = {};
         let page = 0;
-        let size = 10;
+        let size = 20;
         let sort = 'projectNumber,asc';
 
         if (typeof criteriaOrKeyword === 'object' && criteriaOrKeyword !== null) {
             criteria = criteriaOrKeyword;
             page = statusOrPage !== undefined ? statusOrPage : 0;
-            size = pageOrSize !== undefined ? pageOrSize : 10;
+            size = pageOrSize !== undefined ? pageOrSize : 15;
             sort = sizeOrSort || 'projectNumber,asc';
         } else {
             criteria = {
@@ -18,7 +18,7 @@ const projectService = {
                 status: statusOrPage,
             };
             page = pageOrSize !== undefined ? pageOrSize : 0;
-            size = sizeOrSort !== undefined ? sizeOrSort : 10;
+            size = sizeOrSort !== undefined ? sizeOrSort : 15;
             sort = legacySort || 'projectNumber,asc';
         }
 
