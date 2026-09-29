@@ -37,6 +37,7 @@ const TagAutocomplete = forwardRef(function TagAutocomplete(
 
   const wrapperRef = useRef(null);
   const inputRef = useRef(null);
+  const isSelectingRef = useRef(false);
 
   useImperativeHandle(ref, () => inputRef.current);
 
@@ -64,6 +65,9 @@ const TagAutocomplete = forwardRef(function TagAutocomplete(
 
   // Handle input blur (unfocus via Tab or clicking outside)
   const handleBlur = (e) => {
+    if (isSelectingRef.current) {
+      return;
+    }
     if (wrapperRef.current && wrapperRef.current.contains(e.relatedTarget)) {
       return;
     }
@@ -101,6 +105,7 @@ const TagAutocomplete = forwardRef(function TagAutocomplete(
 
   // Select item from suggestions list
   const handleSelectItem = (item) => {
+    isSelectingRef.current = true;
     if (onAddItem) {
       onAddItem(item);
     }
@@ -110,9 +115,14 @@ const TagAutocomplete = forwardRef(function TagAutocomplete(
     setShowDropdown(false);
     setHighlightedIndex(-1);
 
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
+    // Defer focus so it executes after DOM reconciliation & mouse events settle
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+        setIsFocused(true);
+      }
+      isSelectingRef.current = false;
+    }, 0);
   };
 
   // Keyboard navigation & backspace to remove last tag
@@ -134,8 +144,9 @@ const TagAutocomplete = forwardRef(function TagAutocomplete(
       }
       if (e.key === "Enter") {
         e.preventDefault();
-        if (highlightedIndex >= 0 && highlightedIndex < suggestions.length) {
-          handleSelectItem(suggestions[highlightedIndex]);
+        const targetIndex = highlightedIndex >= 0 ? highlightedIndex : 0;
+        if (targetIndex >= 0 && targetIndex < suggestions.length) {
+          handleSelectItem(suggestions[targetIndex]);
         }
         return;
       }
@@ -178,7 +189,19 @@ const TagAutocomplete = forwardRef(function TagAutocomplete(
             <Chip
               key={key}
               label={tagLabel}
-              onDelete={!disabled && onRemoveItem ? () => onRemoveItem(item) : undefined}
+              onDelete={
+                !disabled && onRemoveItem
+                  ? () => {
+                      onRemoveItem(item);
+                      setTimeout(() => {
+                        if (inputRef.current) {
+                          inputRef.current.focus();
+                          setIsFocused(true);
+                        }
+                      }, 0);
+                    }
+                  : undefined
+              }
               size="small"
               variant="outlined"
               sx={{
@@ -254,6 +277,7 @@ const TagAutocomplete = forwardRef(function TagAutocomplete(
               return (
                 <li
                   key={itemKey}
+                  tabIndex={-1}
                   className={`${styles.suggestionItem} ${index === highlightedIndex ? styles.suggestionItemActive : ""
                     }`}
                   onMouseDown={(e) => {
